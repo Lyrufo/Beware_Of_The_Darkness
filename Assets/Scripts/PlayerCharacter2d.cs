@@ -20,13 +20,18 @@ public class PlayerCharacter2D : MonoBehaviour
     [Tooltip("la 'difficulté' pour faire sauter le perso (force appliquée)")]
     public float jumpForce = 16f;
 
-    public LayerMask GroundLayer; 
+    [Tooltip("le layer sur lequel ça agit pour éviter que le chara capte son propre collider ")]
+    public LayerMask groundLayer;
+
+    [Tooltip("la taille du 'rayon' raycast si on veut sauter à nouveau sans toucher le sol")]
+    public float groundDistance = 1.1f;
 
     private Rigidbody2D _rigidbody = null; //pour bouger
 
     private Animator _animator = null; //pour mettre les anim
 
     private SpriteRenderer _spriteRenderer = null; // pour montrer le chara sur l'écran
+ 
 
     // = null c'est pour etre sur que en gros ça fait ref à rien dès le départ
 
@@ -37,6 +42,7 @@ public class PlayerCharacter2D : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+
     }
 
 
@@ -50,12 +56,22 @@ public class PlayerCharacter2D : MonoBehaviour
 
         //ces lignes c'est dédié à l'aimation et à laquelle jouer selon la vitesse et l'état du perso
 
+        // Quand la vitesse en X est négative, on inverse l'animation pour regarder à gauche
 
-        // Si la vitesse en X est négative, on inverse l'animation pour regarder à gauche
-        _spriteRenderer.flipX = _rigidbody.velocity.x < 0;
+        if (_rigidbody.velocity.x > 0) //qd va vers la droite
+        {
+            _spriteRenderer.flipX = false; //ne flip pas
+        }
+        else if (_rigidbody.velocity.x < 0) //qd va vers la gauche
+        {
+            _spriteRenderer.flipX = true; // flip
+        }
+
+        //mais tout ça dans le cas où à la base il était vers la droite, puisqu'on se base sur la vélocité
+
 
         // Utilise la vitesse du personnage pour choisir l'animation ("idle", "move", etc.)
-        _animator.SetFloat("speed", Mathf.Abs(_rigidbody.velocity.x));
+        _animator.SetFloat("xVelocity", Mathf.Abs(_rigidbody.velocity.x));
 
 
         // Si la vitesse en Y est positive, on dit que le personnage saute, sinon il tombe.
@@ -92,6 +108,7 @@ public class PlayerCharacter2D : MonoBehaviour
             //Time.deltaTime notre meilleur pote en gros c'est le temps entre 2 frames (ici aussi en théorie on pourrait une valeur à la place, sauf qu'en mettant la fonction instead, ça s'adapt au nb de fps)
 
         }
+
     }
 
 
@@ -99,11 +116,11 @@ public class PlayerCharacter2D : MonoBehaviour
 
     private void UpdateGround()
     {
-        // Rayon partant légèrement sous les pieds du personnage
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1.1f, GroundLayer); // 1f = distance du rayon
+        
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, groundDistance, groundLayer);
+        //Raycast envoie un rayon pour capter si y'a un collider en partant du bas de l'objet auquel on a assigné le script
 
-        // Si on touche quelque chose (par exemple le sol), on est au sol
-        if (hit.collider != null)
+        if (hit.collider != null) //si pas null alors a touché qqc, donc est au sol, donc je peux sauter
         {
             isGrounded = true;
         }
@@ -117,7 +134,7 @@ public class PlayerCharacter2D : MonoBehaviour
     private void UpdateJump()
     {
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded == true)  //DOWN nécessaire contrairement au dépacement car sinon se joue en boucle
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded == true)  //DOWN nécessaire contrairement au dépacement car sinon se joue en boucle et is grounded pour être sûr d'être au sol
             {
                 _rigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
 
@@ -125,7 +142,8 @@ public class PlayerCharacter2D : MonoBehaviour
             //donc qd espace pressé : on prend l'objet, on lui applique une force (pas un mvt parce que c'est juste une impulsion sur y) 
             //vector2.up expliqué plus haut * la variable force définie en haut 
             //forcemode2d.impulse appplique direct en mode impulsion
-            isGrounded = false;
+            isGrounded = false; 
+            //on remet à l'état faux jusqu'à ce que ça capte le sol et revien en true
             }
             
       
