@@ -358,7 +358,7 @@ GameObject:
   - component: {fileID: 1694937203}
   - component: {fileID: 1694937202}
   - component: {fileID: 1694937201}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: chara
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -380,6 +380,9 @@ MonoBehaviour:
   movementAcceleration: 20
   maxMovementSpeed: 4
   jumpForce: 5.5
+  GroundLayer:
+    serializedVersion: 2
+    m_Bits: 55
 --- !u!61 &1694937202
 BoxCollider2D:
   m_ObjectHideFlags: 0

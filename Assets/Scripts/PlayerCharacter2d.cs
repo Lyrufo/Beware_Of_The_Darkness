@@ -20,6 +20,7 @@ public class PlayerCharacter2D : MonoBehaviour
     [Tooltip("la 'difficulté' pour faire sauter le perso (force appliquée)")]
     public float jumpForce = 16f;
 
+    public LayerMask GroundLayer; 
 
     private Rigidbody2D _rigidbody = null; //pour bouger
 
@@ -99,7 +100,7 @@ public class PlayerCharacter2D : MonoBehaviour
     private void UpdateGround()
     {
         // Rayon partant légèrement sous les pieds du personnage
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1f); // 1f = distance du rayon
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1.1f, GroundLayer); // 1f = distance du rayon
 
         // Si on touche quelque chose (par exemple le sol), on est au sol
         if (hit.collider != null)
