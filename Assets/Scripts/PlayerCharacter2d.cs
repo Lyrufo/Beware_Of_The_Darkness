@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.UIElements;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -114,10 +116,11 @@ public class PlayerCharacter2D : MonoBehaviour
 
     private bool isGrounded = false; //booléen pour savoir si je touche le sol ou pas
 
+
     private void UpdateGround()
     {
         
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, groundDistance, groundLayer);
+        RaycastHit2D hit = Physics2D.CircleCast (transform.position, 0.2f,  Vector2.down, groundDistance, groundLayer);
         //Raycast envoie un rayon pour capter si y'a un collider en partant du bas de l'objet auquel on a assigné le script
 
         if (hit.collider != null) //si pas null alors a touché qqc, donc est au sol, donc je peux sauter
@@ -129,7 +132,14 @@ public class PlayerCharacter2D : MonoBehaviour
             isGrounded = false;
         }
     }
-
+    private void OnDrawGizmos()
+    {
+        // "update" uniquement vu en mode editor
+        // Ici pour voir la taille du Raycast
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, transform.position + Vector3.down * groundDistance);
+        // en gros : tracer une ligne du centre l'objet (transform.position c'est les coordoonées basées sur le centre)  vers la position actuelle + la direction d'un vecteur (ici 3 car a du mal avec 2d) donc vers le bas de la taille grounddistance
+    }
 
     private void UpdateJump()
     {
@@ -164,8 +174,6 @@ public class PlayerCharacter2D : MonoBehaviour
         _rigidbody.velocity = velocity;
         //et pouf on lui applique cette valeur 
     }
-
-
 
 
 }
