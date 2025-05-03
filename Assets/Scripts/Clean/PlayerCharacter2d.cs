@@ -78,7 +78,7 @@ public class PlayerCharacter2D : MonoBehaviour
 
         // Si la vitesse en Y est positive, on dit que le personnage saute, sinon il tombe.
         _animator.SetBool("isJumping", _rigidbody.velocity.y > 0);
-        _animator.SetBool("isFalling", _rigidbody.velocity.y < 0);
+        //_animator.SetBool("isFalling", _rigidbody.velocity.y < 0);  TEMPORAIREMENT PAS ACTIF PUISQUE PAS ANIM ------------------------------
     }
 
 
