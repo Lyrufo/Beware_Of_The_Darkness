@@ -15,6 +15,8 @@ public class SwitchBehavior : MonoBehaviour
     float _switchDelay = 0.5f; //temps avant que le switch reprenne la pos initiale
     bool _isPressingSwitch = false; //si le bouton est déja pressed ou pas donc faux au départ en théorie ------------- A VOIR AVEC LE RESPAWN !!!!!!!!!  ------------
 
+    [SerializeField] InventoryManager.AllItems _requiredItem;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -60,14 +62,19 @@ public class SwitchBehavior : MonoBehaviour
         {
             _isPressingSwitch = !_isPressingSwitch; //en gros au lieu de mettre false ou true on inverse son état et ça c'est cool donc premier check et chagenement : on inverse l'état du switch
 
-            if(_isDoorOpenSwitch && !_doorBehavior._isDoorOpen) //si c'est un bouton, qui permet d'ouvrir et si la door est pas deja open 
+            if(HasRequiredItem(_requiredItem)) //donc si porte ouverte
             {
-                _doorBehavior._isDoorOpen = !_doorBehavior._isDoorOpen; // paf on inverse (donc ici on ouvre)
-            }
-            else if (_isDoorCloseSwitch && _doorBehavior._isDoorOpen)  //si c'est un bouton, qui permet de fermer et si la door est open
-            {
+                if (_isDoorOpenSwitch && !_doorBehavior._isDoorOpen) //si c'est un bouton, qui permet d'ouvrir et si la door est pas deja open 
+                {
+                    _doorBehavior._isDoorOpen = !_doorBehavior._isDoorOpen; // paf on inverse (donc ici on ouvre)
+                }
+                else if (_isDoorCloseSwitch && _doorBehavior._isDoorOpen)  //si c'est un bouton, qui permet de fermer et si la door est open
+                {
                     _doorBehavior._isDoorOpen = !_doorBehavior._isDoorOpen; // paf on ferme
                 }
+
+            }
+            
         }
     }
 
@@ -88,5 +95,16 @@ public class SwitchBehavior : MonoBehaviour
 
     }
 
-    
+
+    public bool HasRequiredItem(InventoryManager.AllItems itemRequired)
+    {
+        if (InventoryManager.Instance._inventoryItems.Contains(itemRequired)) 
+        {
+            return true ;
+        }
+        else
+        { 
+            return false ; 
+        }
+    }
 }
