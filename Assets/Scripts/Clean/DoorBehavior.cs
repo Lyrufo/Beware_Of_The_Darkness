@@ -8,11 +8,12 @@ public class DoorBehavior : MonoBehaviour
     Vector3 _doorClosedPos; //coordonnées en 3 axes (a du mal avec la 2d) de la porte fermée et ouvrte en dessous
     Vector3 _doorOpenPos;
     public float _doorSpeed = 10f; //rapidité pour passer de l'état 1 à 2
+    public float _doorHeight = 10f;
 
     void Awake()
     {
         _doorClosedPos = transform.position; // en gros chope la position actuelle de la porte au départ du jeu et lui assigne "l'état" closed
-        _doorOpenPos = new Vector3(transform.position.x,transform.position.y +3f,transform.position.z); //donc on garde les coordonnées de base sauf le y
+        _doorOpenPos = new Vector3(transform.position.x,transform.position.y +_doorHeight,transform.position.z); //donc on garde les coordonnées de base sauf le y
     }
 
     // Update is called once per frame

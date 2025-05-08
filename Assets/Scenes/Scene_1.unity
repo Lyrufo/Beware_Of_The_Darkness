@@ -150,8 +150,8 @@ Transform:
   m_GameObject: {fileID: 11253424}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10.7, y: 2.95, z: 0}
-  m_LocalScale: {x: 1, y: 3.8669, z: 1}
+  m_LocalPosition: {x: 10.7, y: 6.83, z: 0}
+  m_LocalScale: {x: 1, y: 11.504027, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 85500237}
@@ -267,6 +267,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isDoorOpen: 0
   _doorSpeed: 10
+  _doorHeight: 10
 --- !u!1 &85500236
 GameObject:
   m_ObjectHideFlags: 0
@@ -509,6 +510,10 @@ MonoBehaviour:
   FollowSpeed: 2
   target: {fileID: 1694937206}
   yOffset: 1
+  zoomSpeed: 1
+  targetZoom: 3
+  zoomDuration: 2
+  deathAfterCamera: 3
 --- !u!1 &340149400
 GameObject:
   m_ObjectHideFlags: 0
@@ -1057,7 +1062,7 @@ GameObject:
   - component: {fileID: 512598487}
   m_Layer: 5
   m_Name: Name
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1950,7 +1955,7 @@ GameObject:
   - component: {fileID: 1341052848}
   m_Layer: 5
   m_Name: Description
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2116,7 +2121,7 @@ GameObject:
   - component: {fileID: 1506989848}
   m_Layer: 5
   m_Name: InteractionPopUp
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2322,7 +2327,7 @@ GameObject:
   - component: {fileID: 1550638340}
   m_Layer: 5
   m_Name: ObjectSprite
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2412,8 +2417,8 @@ Transform:
   m_GameObject: {fileID: 1656545608}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 15.150002, y: 2.95, z: 0}
-  m_LocalScale: {x: 1, y: 3.8669, z: 1}
+  m_LocalPosition: {x: 15.150002, y: 6.83, z: 0}
+  m_LocalScale: {x: 1, y: 11.504027, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 85500237}
@@ -2529,6 +2534,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isDoorOpen: 0
   _doorSpeed: 10
+  _doorHeight: 10
 --- !u!1 &1694937200
 GameObject:
   m_ObjectHideFlags: 0
@@ -2564,14 +2570,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fce531656c7c454eac21545d148932f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementAcceleration: 20
-  maxMovementSpeed: 4
-  jumpForce: 8.25
+  movementAcceleration: 68.2
+  maxMovementSpeed: 8.03
+  jumpForce: 25.12
   fallForce: 7.25
   groundLayer:
     serializedVersion: 2
     m_Bits: 55
-  groundDistance: 0.85
+  groundDistance: 3.45
+  playerRigidbody: {fileID: 0}
+  canMove: 1
+  peakDuration: 6
 --- !u!61 &1694937202
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2604,18 +2613,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.011317335, y: -0.040823698}
+  m_Offset: {x: -0.0113173425, y: -0.6694209}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.6666667, y: 1.3333334}
-    newSize: {x: 0.32, y: 0.64}
+    oldSize: {x: 3, y: 5}
+    newSize: {x: 3, y: 5}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.29558307, y: 1.2607822}
+  m_Size: {x: 0.29558307, y: 3.662921}
   m_EdgeRadius: 0
 --- !u!95 &1694937203
 Animator:
@@ -2627,7 +2636,7 @@ Animator:
   m_GameObject: {fileID: 1694937200}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 45fd53f85fb95af418006da43d774c75, type: 2}
+  m_Controller: {fileID: 9100000, guid: 5dc54081dfcf355428e8e1f61dea6fdc, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2653,7 +2662,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 7.94
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -2706,12 +2715,12 @@ SpriteRenderer:
   m_SortingLayerID: 1320496687
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: f3383835d568ee046a211efd287bd473, type: 3}
+  m_Sprite: {fileID: -1249873675, guid: 912f32b9868085f4fbfe912292f1531a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.32, y: 0.64}
+  m_Size: {x: 3, y: 5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -2726,7 +2735,7 @@ Transform:
   m_GameObject: {fileID: 1694937200}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.097, y: 1.81, z: 0}
+  m_LocalPosition: {x: 7.097, y: 4.06, z: 0}
   m_LocalScale: {x: 1.2273, y: 1.2273, z: 1.2273}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2780,8 +2789,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timer: 0
-  maxtime: 23.65
-  Player: {fileID: 1694937200}
+  maxtime: 79.6
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 334558747}
+        m_TargetAssemblyTypeName: CameraMovement, Assembly-CSharp
+        m_MethodName: StartZoomBeforeDeath
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1775477020
 GameObject:
   m_ObjectHideFlags: 0
@@ -2827,7 +2850,7 @@ GameObject:
   - component: {fileID: 1842677349}
   m_Layer: 5
   m_Name: DescriptionPanel
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2905,7 +2928,7 @@ GameObject:
   - component: {fileID: 2032404536}
   m_Layer: 5
   m_Name: E
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3079,7 +3102,7 @@ GameObject:
   - component: {fileID: 2053394566}
   m_Layer: 5
   m_Name: Screen Canva
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3141,8 +3164,8 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 25
+  m_VertexColorAlwaysGammaSpace: 1
+  m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -3177,11 +3200,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 2053394561}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5dc94ab2c3b79d4408e875969e9ef66d, type: 3}
+  m_Script: {fileID: 11500000, guid: 118d36be9a9438a4789ed07e7d27333e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timerText: {fileID: 0}
-  elapsedTime: 0
+  data: {fileID: 11400000, guid: 71a9b27ed9fa08c4cab618703e62928c, type: 2}
+  interactionPopUp: {fileID: 1506989846}
+  descriptionPanel: {fileID: 1842677347}
+  objectNameText: {fileID: 512598487}
+  descriptionText: {fileID: 1341052848}
+  objectImage: {fileID: 1550638340}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
