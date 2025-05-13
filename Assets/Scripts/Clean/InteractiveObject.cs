@@ -64,12 +64,13 @@ void Update()
                 descriptionText.text = data.description;
                 objectImage.sprite = data.minimodel;
 
+                interactionPopUp.SetActive(false);
                 descriptionPanel.SetActive(true); //affiche le panel de description
                 _isDescriptionOpen = true; //met à jour létat
                 PauseGame(); 
             }
         }
-        if (_isDescriptionOpen && Input.GetKeyDown(KeyCode.Escape)) //si la description est ouverte et on appuie espace
+        if (_isDescriptionOpen && Input.GetKeyDown(KeyCode.Escape)) //si la description est ouverte et on appuie echap
         {
             descriptionPanel.SetActive(false); //cache panel
             _isDescriptionOpen = false ; //met a jour l'état
