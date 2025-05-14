@@ -100,7 +100,9 @@ public class PlayerCharacter2D : MonoBehaviour
             _jumpPhase = -1; //au sol
         }
         _animator.SetInteger("JumpPhase", _jumpPhase);
-        
+        bool isMoving = Mathf.Abs(playerRigidbody.velocity.x) > 0.1f || Mathf.Abs(playerRigidbody.velocity.y) > 0.1f;
+        _animator.SetBool("IsMoving", isMoving);
+
     }
 
 
@@ -193,6 +195,20 @@ public class PlayerCharacter2D : MonoBehaviour
         //et pouf on lui applique cette valeur 
     }
 
+    public void SetCinematicMode(bool active)
+    {
+        if (active)
+        {
+            canMove = false;
+            GetComponent<Rigidbody2D>().velocity = Vector2.zero; // Arrête tout mouvement
+            GetComponent<Animator>().SetBool("IsMoving", false); // Force l'état idle
+        }
+        else
+        {
+            canMove = true;// Retour au gameplay normal
+        }
+
+    }
 
 }
 

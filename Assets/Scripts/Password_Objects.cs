@@ -47,6 +47,12 @@ public class Password_Objects : MonoBehaviour
     [Tooltip("temps à regarder l'ouverture")]
     [SerializeField] public float _doorOpenViewTime = 1f;
 
+    [Tooltip("le perso dont je vais bloquer les controles")]
+    public PlayerCharacter2D character;
+
+    [Tooltip("Le script du perso")]
+    public PlayerCharacter2D playerCharacter;
+
 
 
 
@@ -86,6 +92,11 @@ public class Password_Objects : MonoBehaviour
                 messageText.text = "Enter Password"; //reset message au dessus ofc
                 codeInput.text = ""; // reset champ
                 codeInput.ActivateInputField(); //hop pas besoin de cliquer dans le champ
+                if (playerCharacter != null)
+                {
+                    playerCharacter.SetCinematicMode(true); // stop le mouvement
+                }
+                
 
             }
         }
@@ -100,6 +111,10 @@ public class Password_Objects : MonoBehaviour
         {
             EnterPasswordPanel.SetActive(false); //cache panel
             _isEnterPasswordPanelOpen = false; //met a jour l'état
+            if (playerCharacter != null)
+            {
+                playerCharacter.SetCinematicMode(false); // rend le contrôle au joueur
+            }
         }
     }
 
@@ -136,68 +151,44 @@ public class Password_Objects : MonoBehaviour
 
     }
 
-    private IEnumerator CodeBon() //pour fermer le panel de password avec un coide bon mais en attendant qq secondes avant le temps de mettre un effet par ex
-    {
-        yield return new WaitForSeconds(_delayBeforeClose);
-        EnterPasswordPanel.SetActive(false); //cache le password panel
-        _isEnterPasswordPanelOpen = false; //reset l'état
-
-
-        if (cameraScript != null && cameraFocusTarget != null)
-        {
-            yield return cameraScript.StartCoroutine(cameraScript.DoorZoom(cameraFocusTarget));
-            yield return new WaitForSeconds(_doorClosedViewTime); 
-
-            if (targetDoor != null) targetDoor._isDoorOpen = true;
-
-            yield return new WaitForSeconds(_doorOpenViewTime);
-
-            cameraScript.isZooming = false;
-        }
-
-        else if (targetDoor != null)
-            targetDoor._isDoorOpen = true;
-
-    }
-
-    private IEnumerator FocusCameraOnTarget(Transform target, float duration)
-    {
-        cameraScript.isZooming = true;
-
-        float elapsed = 0f;
-        float startZoom = Camera.main.orthographicSize;
-        float endZoom = cameraScript.targetZoom;
-        Vector3 startPos = Camera.main.transform.position;
-        Vector3 endPos = new Vector3(target.position.x , target.position.y + cameraScript.yOffset, -10f);
-
-        while (elapsed < duration)
-        {
-            Camera.main.orthographicSize = Mathf.Lerp(startZoom, endZoom, elapsed / duration);
-            Camera.main.transform.position = Vector3.Lerp(startPos, endPos, elapsed / duration);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        yield return new WaitForSeconds(1f);
-
-        elapsed = 0f;
-        while (elapsed < duration)
-        {
-            Camera.main.orthographicSize = Mathf.Lerp(endZoom, startZoom, elapsed / duration);
-            Camera.main.transform.position = Vector3.Lerp(endPos, startPos, elapsed / duration);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        cameraScript.isZooming = false;
-    }
-
-
     private void ResetInputField() //on reset le truc pour entrer le password
     {
         codeInput.text = ""; //on vide la case de la rentrée de code
         codeInput.ActivateInputField(); //et on reclique automatiquement dedans = pas besoin de reprednre la souris !
     }
+
+
+    private IEnumerator CodeBon() //pour fermer le panel de password avec un coide bon mais en attendant qq secondes avant le temps de mettre un effet par ex
+    {
+        yield return new WaitForSeconds(_delayBeforeClose); //donc attends le delay mis en haut 
+        EnterPasswordPanel.SetActive(false); //cache le password panel
+        _isEnterPasswordPanelOpen = false; //reset l'état
+
+
+        if (cameraScript != null && cameraFocusTarget != null) //donc ofc on vérifie que ça a été corretement assigné 
+        {
+            yield return cameraScript.StartCoroutine(cameraScript.DoorZoomIn(cameraFocusTarget)); //on lance le doorzoomIN de la cam (dans le script cam mvt)
+
+            yield return new WaitForSeconds(_doorClosedViewTime); //on attend le temps défini en haut pour regarder la porte fermée 
+
+            if (targetDoor != null) targetDoor._isDoorOpen = true; //donc si porte bien sélectionnée : on lance l'ouverture du doorbehavior je crois ou juste door
+
+            yield return new WaitForSeconds(_doorOpenViewTime); //on attend encore qq secondes sans bouger pour voir la porte s'ouvrir 
+
+            yield return cameraScript.StartCoroutine(cameraScript.DoorZoomOut());
+
+            cameraScript.isZooming = false; // et on remet le zoom à non 
+        }
+
+        else if (targetDoor != null)
+        {
+            targetDoor._isDoorOpen = true; //juste au cas où on l'ouvre qd même, même sans le zoom
+        }
+
+    }
+
+   
+
 
 
 }
