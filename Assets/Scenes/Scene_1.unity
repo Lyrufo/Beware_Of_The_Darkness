@@ -179,7 +179,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: Try
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8aa3f379a3da44d4890d9f4b8ad4e091, type: 2}
   m_sharedMaterial: {fileID: 7294643711248737031, guid: 8aa3f379a3da44d4890d9f4b8ad4e091, type: 2}
@@ -431,6 +431,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 437754259}
   - {fileID: 11253425}
   - {fileID: 733993059}
   - {fileID: 1656545609}
@@ -886,13 +887,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abcded1a4692abd428f90398f046d7ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  doorTargetZoom: 5
+  doorZoomDuration: 1
+  doorYOffset: 0.5
+  targetZoom: 12.13
+  zoomDuration: 2.58
+  yOffset: 1
   FollowSpeed: 2
   target: {fileID: 1694937206}
-  yOffset: 1
-  zoomSpeed: 1
-  targetZoom: 3
-  zoomDuration: 2
+  zoomSpeed: 1.21
   deathAfterCamera: 3
+  isZooming: 0
 --- !u!1 &340149400
 GameObject:
   m_ObjectHideFlags: 0
@@ -1114,6 +1119,37 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!1 &437754258
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 437754259}
+  m_Layer: 0
+  m_Name: focus dooor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &437754259
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 437754258}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 10.86, y: 6.3268237, z: -0.085270956}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 85500237}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &449744866
 GameObject:
   m_ObjectHideFlags: 0
@@ -1196,7 +1232,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 449744869}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 600874662}
+        m_TargetAssemblyTypeName: Password_Objects, Assembly-CSharp
+        m_MethodName: TryPassword
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &449744869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1614,6 +1662,7 @@ GameObject:
   - component: {fileID: 600874659}
   - component: {fileID: 600874661}
   - component: {fileID: 600874660}
+  - component: {fileID: 600874662}
   m_Layer: 5
   m_Name: Enter_Password_Panel
   m_TagString: Untagged
@@ -1682,6 +1731,29 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 600874658}
   m_CullTransparentMesh: 1
+--- !u!114 &600874662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 600874658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 197cebbc7855cc44493350867ba15413, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionPopUp: {fileID: 2032404534}
+  EnterPasswordPanel: {fileID: 600874658}
+  _currentPassword: 1234
+  codeInput: {fileID: 1724643098}
+  messageText: {fileID: 242564659}
+  _delayBeforeClose: 1.5
+  targetDoor: {fileID: 11253429}
+  cameraScript: {fileID: 334558747}
+  cameraFocusTarget: {fileID: 437754259}
+  _doorClosedViewTime: 0.3
+  _doorOpenViewTime: 1
 --- !u!1 &628592629
 GameObject:
   m_ObjectHideFlags: 0
@@ -3662,7 +3734,7 @@ MonoBehaviour:
   m_CharacterValidation: 0
   m_RegexValue: 
   m_GlobalPointSize: 14
-  m_CharacterLimit: 0
+  m_CharacterLimit: 4
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
@@ -4566,6 +4638,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionPopUp: {fileID: 2032404534}
   EnterPasswordPanel: {fileID: 600874658}
+  _currentPassword: 1234
+  codeInput: {fileID: 1724643098}
+  messageText: {fileID: 242564659}
+  _delayBeforeClose: 1.5
+  targetDoor: {fileID: 11253429}
+  cameraScript: {fileID: 334558747}
+  cameraFocusTarget: {fileID: 437754259}
+  _doorClosedViewTime: 0.3
+  _doorOpenViewTime: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

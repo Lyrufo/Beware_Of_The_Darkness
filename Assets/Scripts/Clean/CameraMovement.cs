@@ -7,20 +7,21 @@ using UnityEngine.InputSystem;
 public class CameraMovement : MonoBehaviour
 
 {
-    [Tooltip("vitesse de suivi de la caméra")]
-    public float FollowSpeed = 2f;
 
-    [Tooltip("Truc que suit la cam (donc player)")]
-    public Transform target;
+    [Header("Zoom sur la Porte")]
 
-    [Tooltip("la hauteur de base la cam en +")]
-    public float yOffset = 1f;
+    [Tooltip("Zoom visé pour l'ouverture de porte")]
+    public float doorTargetZoom = 5f;
+
+    [Tooltip("Durée du zoom pour la porte")]
+    public float doorZoomDuration = 1f;
 
 
+    [Tooltip("Décalage Y pour le focus porte")]
+    public float doorYOffset = 0.5f;
 
-    //ce qui concerne le zoom à la mort
-    [Tooltip("vitesse de zoom ofc")]
-    public float zoomSpeed = 1f;
+
+    [Header("Zoom sur la Mort")]
 
     [Tooltip("en gros la fenetre de zoom visée")]
     public float targetZoom = 3f;
@@ -28,12 +29,26 @@ public class CameraMovement : MonoBehaviour
     [Tooltip("durée du zoom en secondes")]
     public float zoomDuration = 2f;
 
+    [Tooltip("la hauteur de base la cam en +")]
+    public float yOffset = 1f;
+
+    [Tooltip("vitesse de suivi de la caméra")]
+    public float FollowSpeed = 2f;
+
+    [Tooltip("Truc que suit la cam (donc player)")]
+    public Transform target;
+
+    [Tooltip("vitesse de zoom ofc")]
+    public float zoomSpeed = 1f;
+
     [Tooltip("le temps en seconde de pause avant que le perso soit détruit après la fin du zoom")] //------------------ Go jouer anim du player ici en mode droite gauche ??? que se passe t-il oulala 
     public float deathAfterCamera = 3f;
 
+
+
     private float initialZoom; //ça c'est juste la fenetre de base 
 
-    private bool isZooming = false;
+    public bool isZooming = false;
 
 
 
@@ -57,6 +72,11 @@ public class CameraMovement : MonoBehaviour
         }
 
 
+    }
+
+    public void ResetCamera()
+    {
+       isZooming = false;
     }
 
     IEnumerator ZoomAndCenter(Transform playerTransform) //choppe la coroutine et la pos et tt du player
@@ -96,6 +116,26 @@ public class CameraMovement : MonoBehaviour
         Destroy(playerTransform.gameObject);
         Debug.Log("Mort après zoom");
 
+    }
+
+    public IEnumerator DoorZoom(Transform doorTarget, System.Action onComplete = null)
+    {
+        isZooming = true;
+        float elapsed = 0f;
+        float startZoom = Camera.main.orthographicSize;
+        Vector3 startPos = Camera.main.transform.position;
+        Vector3 endPos = new Vector3(doorTarget.position.x, doorTarget.position.y + doorYOffset, -10f);
+
+        // Zoom IN
+        while (elapsed < doorZoomDuration)
+        {
+            Camera.main.orthographicSize = Mathf.Lerp(startZoom, doorTargetZoom, elapsed / doorZoomDuration);
+            Camera.main.transform.position = Vector3.Lerp(startPos, endPos, elapsed / doorZoomDuration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        onComplete?.Invoke(); // Callback quand le zoom est fini
     }
 
 
