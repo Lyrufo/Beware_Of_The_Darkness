@@ -1724,6 +1724,7 @@ MonoBehaviour:
   _doorClosedViewTime: 1.44
   _doorOpenViewTime: 1
   character: {fileID: 1694937201}
+  playerCharacter: {fileID: 0}
 --- !u!1 &628592629
 GameObject:
   m_ObjectHideFlags: 0
@@ -3467,7 +3468,6 @@ MonoBehaviour:
   groundDistance: 3.45
   playerRigidbody: {fileID: 0}
   canMove: 1
-  peakDuration: 6
 --- !u!61 &1694937202
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4708,6 +4708,7 @@ MonoBehaviour:
   _doorClosedViewTime: 0.3
   _doorOpenViewTime: 1
   character: {fileID: 1694937201}
+  playerCharacter: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

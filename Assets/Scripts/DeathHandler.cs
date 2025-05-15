@@ -74,8 +74,7 @@ public class DeathHandler : MonoBehaviour
 
         yield return cameraMovement.ZoomAndCenterCoroutine(playerTransform); //zoom de la cam
         yield return new WaitForSeconds(delayBeforeDestroy); // Attente après le zoom
-
-        
+     
         Destroy(playerTransform.gameObject);
         Debug.Log("Joueur détruit après séquence de mort"); //joueur détruit 
 

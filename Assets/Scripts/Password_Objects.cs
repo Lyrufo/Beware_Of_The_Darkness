@@ -94,7 +94,8 @@ public class Password_Objects : MonoBehaviour
                 codeInput.ActivateInputField(); //hop pas besoin de cliquer dans le champ
                 if (playerCharacter != null)
                 {
-                    playerCharacter.SetCinematicMode(true); // stop le mouvement
+                    playerCharacter.SetCinematicMode(true); // lace mode cinématique
+                    playerCharacter.GetComponent<Rigidbody2D>().velocity = Vector2.zero; // stop velocité
                 }
                 
 
@@ -167,6 +168,12 @@ public class Password_Objects : MonoBehaviour
 
         if (cameraScript != null && cameraFocusTarget != null) //donc ofc on vérifie que ça a été corretement assigné 
         {
+            if (playerCharacter != null)
+            {
+                playerCharacter.SetCinematicMode(true);
+                playerCharacter.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            }
+
             yield return cameraScript.StartCoroutine(cameraScript.DoorZoomIn(cameraFocusTarget)); //on lance le doorzoomIN de la cam (dans le script cam mvt)
 
             yield return new WaitForSeconds(_doorClosedViewTime); //on attend le temps défini en haut pour regarder la porte fermée 
@@ -178,17 +185,16 @@ public class Password_Objects : MonoBehaviour
             yield return cameraScript.StartCoroutine(cameraScript.DoorZoomOut());
 
             cameraScript.isZooming = false; // et on remet le zoom à non 
+
+            if (playerCharacter != null)
+            {
+                playerCharacter.SetCinematicMode(false);
+            }
         }
 
         else if (targetDoor != null)
         {
             targetDoor._isDoorOpen = true; //juste au cas où on l'ouvre qd même, même sans le zoom
         }
-
     }
-
-   
-
-
-
 }

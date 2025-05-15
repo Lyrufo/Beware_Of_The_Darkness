@@ -39,13 +39,7 @@ public class PlayerCharacter2D : MonoBehaviour
 
     public bool canMove = true;
  
-    private bool isGrounded = false; //booléen pour savoir si je touche le sol ou pas
-
-    private int _jumpPhase = -1; //pour séparer les phases de saut : -1 au sol (donc pas saut)  0 apogée, 1 début, 2fin
-
-    public float peakDuration = 0.5f;
-
-    
+    private bool isGrounded = false; //booléen pour savoir si je touche le sol ou pas    
 
 
     private void Awake()
@@ -71,38 +65,18 @@ public class PlayerCharacter2D : MonoBehaviour
         UpdateGround(); //vérifie si le joueur est bien au sol
 
         //ces lignes c'est dédié à l'aimation et à laquelle jouer selon la vitesse et l'état du perso
-
+        ;
         // Quand la vitesse en X est négative, on inverse l'animation pour regarder à gauche
-
-        if (playerRigidbody.velocity.x > 0) //qd va vers la droite
+        if (Mathf.Abs(playerRigidbody.velocity.x) > 0.1f)
         {
-            _spriteRenderer.flipX = false; //ne flip pas
+            _spriteRenderer.flipX = playerRigidbody.velocity.x < 0;
         }
-        else if (playerRigidbody.velocity.x < 0) //qd va vers la gauche
-        {
-            _spriteRenderer.flipX = true; // flip
-        }//mais tout ça dans le cas où à la base il était vers la droite, puisqu'on se base sur la vélocité
+        // flip
+        //mais tout ça dans le cas où à la base il était vers la droite, puisqu'on se base sur la vélocité
 
         _animator.SetFloat("xVelocity", Mathf.Abs(playerRigidbody.velocity.x));
         _animator.SetBool("isGrounded", isGrounded);
-
-        if (!isGrounded) 
-        {
-            float yVelocity = playerRigidbody.velocity.y;
-
-            if (yVelocity > peakDuration) _jumpPhase = 1; //montée
-            else if (yVelocity < -peakDuration) _jumpPhase = 2; // descente
-            else _jumpPhase = 0; //apogéééééée
-        
-        }
-        else
-        {
-            _jumpPhase = -1; //au sol
-        }
-        _animator.SetInteger("JumpPhase", _jumpPhase);
-        bool isMoving = Mathf.Abs(playerRigidbody.velocity.x) > 0.1f || Mathf.Abs(playerRigidbody.velocity.y) > 0.1f;
-        _animator.SetBool("IsMoving", isMoving);
-
+        _animator.SetFloat("yVelocity", playerRigidbody.velocity.y);
     }
 
 
@@ -121,7 +95,9 @@ public class PlayerCharacter2D : MonoBehaviour
 
         if (xMovement == 0) //si perso bouge pas
         {
-            playerRigidbody.velocity = new Vector2(0, playerRigidbody.velocity.y); // on met son mvt sur x à 0 mais on laisse son état sur y comme il est (donc s'il saute ou tombe)
+            playerRigidbody.velocity = new Vector2(Mathf.Lerp(playerRigidbody.velocity.x, 0, Time.deltaTime * 10f),playerRigidbody.velocity.y);
+        
+            // on met son mvt sur x à 0 mais on laisse son état sur y comme il est (donc s'il saute ou tombe)
         }
         else //se joue ds tous les cas dès qu'il y a un mvt (lorsque xmovement =/ 0) donc ds tous si une key est pressée
         {
@@ -170,7 +146,6 @@ public class PlayerCharacter2D : MonoBehaviour
             //donc qd espace pressé : on prend l'objet, on lui applique une force (pas un mvt parce que c'est juste une impulsion sur y) 
             //vector2.up expliqué plus haut * la variable force définie en haut 
             //forcemode2d.impulse appplique direct en mode impulsion
-            _jumpPhase = 1; //on lance phase 1 donc début anim 
             
             isGrounded = false; 
             //on remet à l'état faux jusqu'à ce que ça capte le sol et revien en true
@@ -200,12 +175,16 @@ public class PlayerCharacter2D : MonoBehaviour
         if (active)
         {
             canMove = false;
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero; // Arrête tout mouvement
-            GetComponent<Animator>().SetBool("IsMoving", false); // Force l'état idle
+            playerRigidbody.velocity = Vector2.zero;
+            playerRigidbody.gravityScale = 0; // Désactive la gravité temporairement
+            _animator.SetBool("IsMoving", false);
+            _animator.SetBool("ForceIdle", true); 
         }
         else
         {
-            canMove = true;// Retour au gameplay normal
+            playerRigidbody.gravityScale = 1; // Rétabli la gravité
+            _animator.SetBool("ForceIdle", false);
+            canMove = true;
         }
 
     }
