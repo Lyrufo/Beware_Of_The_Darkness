@@ -58,8 +58,18 @@ public class SwitchBehavior : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Player")) //ig si c'est sur le même "calque" genre s'ils peuvent intéragir si j'ai bien compris donc si collision avec les deux
+        if(collision.CompareTag("Player")) //si c'est qqc avec le tag player qui intéragit avec 
         {
+            if (HasRequiredItem(_requiredItem))
+            {
+                Debug.Log("Item requis OK");
+            }
+            else
+            {
+                Debug.LogWarning("Item requis manquant !");
+            }
+
+
             _isPressingSwitch = !_isPressingSwitch; //en gros au lieu de mettre false ou true on inverse son état et ça c'est cool donc premier check et chagenement : on inverse l'état du switch
 
             if(HasRequiredItem(_requiredItem)) //donc si porte ouverte
@@ -107,4 +117,6 @@ public class SwitchBehavior : MonoBehaviour
             return false ; 
         }
     }
+
+
 }

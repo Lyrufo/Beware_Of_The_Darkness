@@ -36,7 +36,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: _isDoorOpen
+    m_ConditionEvent: isDoorOpen
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1106550577867198280}
@@ -61,7 +61,7 @@ AnimatorController:
   m_Name: UnLocked_Door_Right_0
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: _isDoorOpen
+  - m_Name: isDoorOpen
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -127,7 +127,7 @@ AnimatorStateMachine:
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 50, y: 20, z: 0}
-  m_EntryPosition: {x: -100, y: 70, z: 0}
+  m_EntryPosition: {x: 330, y: 410, z: 0}
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
-  m_DefaultState: {fileID: 1106550577867198280}
+  m_DefaultState: {fileID: -5438031838273364630}
