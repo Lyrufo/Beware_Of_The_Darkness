@@ -8491,7 +8491,7 @@ GameObject:
   - component: {fileID: 1219525530}
   - component: {fileID: 1219525532}
   - component: {fileID: 1219525531}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: platform (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8621,7 +8621,7 @@ GameObject:
   - component: {fileID: 1266136859}
   - component: {fileID: 1266136858}
   - component: {fileID: 1266136860}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9128,7 +9128,7 @@ GameObject:
   - component: {fileID: 1546130666}
   - component: {fileID: 1546130665}
   - component: {fileID: 1546130664}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: platform (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9568,6 +9568,7 @@ GameObject:
   - component: {fileID: 1694937202}
   - component: {fileID: 1694937201}
   - component: {fileID: 1694937207}
+  - component: {fileID: 1694937210}
   - component: {fileID: 1694937208}
   - component: {fileID: 1694937209}
   m_Layer: 3
@@ -9595,10 +9596,11 @@ MonoBehaviour:
   fallForce: 7.25
   groundLayer:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 256
   groundDistance: 3.45
   playerRigidbody: {fileID: 0}
   canMove: 1
+  isGrounded: 0
 --- !u!61 &1694937202
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9828,6 +9830,22 @@ MonoBehaviour:
   deathAnimation: DeathAnim
   monsterEffectAnimationName: MonsterEffectArrival
   monsterEffect: {fileID: 0}
+--- !u!114 &1694937210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1694937200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4504c551c0f80824e96868be500366d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showMovementDebug: 1
+  showJumpDebug: 1
+  showGroundDebug: 1
+  showAnimatorDebug: 1
 --- !u!1 &1724643096
 GameObject:
   m_ObjectHideFlags: 0

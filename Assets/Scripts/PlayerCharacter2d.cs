@@ -38,8 +38,8 @@ public class PlayerCharacter2D : MonoBehaviour
     private SpriteRenderer _spriteRenderer = null; // pour montrer le chara sur l'écran;  = null c'est pour etre sur que en gros ça fait ref à rien dès le départ
 
     public bool canMove = true;
- 
-    private bool isGrounded = false; //booléen pour savoir si je touche le sol ou pas    
+
+    public bool isGrounded = false; //booléen pour savoir si je touche le sol ou pas    
 
 
     private void Awake()
@@ -60,7 +60,7 @@ public class PlayerCharacter2D : MonoBehaviour
             UpdateMovement(); //met à jour le sens de l'anim 
             UpdateJump(); //vérifie si on appuie espace pour sauter
         }
-        
+
         ClampVelocity(); //capte la vitesse pour limiter la vitesse max
         UpdateGround(); //vérifie si le joueur est bien au sol
 
@@ -77,6 +77,7 @@ public class PlayerCharacter2D : MonoBehaviour
         _animator.SetFloat("xVelocity", Mathf.Abs(playerRigidbody.velocity.x));
         _animator.SetBool("isGrounded", isGrounded);
         _animator.SetFloat("yVelocity", playerRigidbody.velocity.y);
+        _animator.SetBool("IsMoving", Mathf.Abs(playerRigidbody.velocity.x) > 0.1f);
     }
 
 
@@ -95,8 +96,8 @@ public class PlayerCharacter2D : MonoBehaviour
 
         if (xMovement == 0) //si perso bouge pas
         {
-            playerRigidbody.velocity = new Vector2(Mathf.Lerp(playerRigidbody.velocity.x, 0, Time.deltaTime * 10f),playerRigidbody.velocity.y);
-        
+            playerRigidbody.velocity = new Vector2(Mathf.Lerp(playerRigidbody.velocity.x, 0, Time.deltaTime * 10f), playerRigidbody.velocity.y);
+
             // on met son mvt sur x à 0 mais on laisse son état sur y comme il est (donc s'il saute ou tombe)
         }
         else //se joue ds tous les cas dès qu'il y a un mvt (lorsque xmovement =/ 0) donc ds tous si une key est pressée
@@ -115,8 +116,11 @@ public class PlayerCharacter2D : MonoBehaviour
 
     private void UpdateGround()
     {
-        
-        RaycastHit2D hit = Physics2D.CircleCast (transform.position, 0.2f,  Vector2.down, groundDistance, groundLayer);
+
+        BoxCollider2D collider = GetComponent<BoxCollider2D>(); // On récupère la boîte
+        Vector2 origin = new Vector2(collider.bounds.center.x, collider.bounds.min.y); // Point de départ en bas du collider
+
+        RaycastHit2D hit = Physics2D.CircleCast(origin, 0.2f, Vector2.down, groundDistance, groundLayer);
         //Raycast envoie un rayon pour capter si y'a un collider en partant du bas de l'objet auquel on a assigné le script
 
         if (hit.collider != null) //si pas null alors a touché qqc, donc est au sol, donc je peux sauter
@@ -130,11 +134,14 @@ public class PlayerCharacter2D : MonoBehaviour
     }
     private void OnDrawGizmos()
     {
-        // "update" uniquement vu en mode editor
-        // Ici pour voir la taille du Raycast
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, transform.position + Vector3.down * groundDistance);
-        // en gros : tracer une ligne du centre l'objet (transform.position c'est les coordoonées basées sur le centre)  vers la position actuelle + la direction d'un vecteur (ici 3 car a du mal avec 2d) donc vers le bas de la taille grounddistance
+
+        BoxCollider2D collider = GetComponent<BoxCollider2D>();
+        if (collider != null)
+        {
+            Vector2 origin = new Vector2(collider.bounds.center.x, collider.bounds.min.y);
+            Gizmos.DrawWireSphere(origin + Vector2.down * groundDistance, 0.2f);
+        }
     }
 
     private void UpdateJump()
@@ -146,8 +153,8 @@ public class PlayerCharacter2D : MonoBehaviour
             //donc qd espace pressé : on prend l'objet, on lui applique une force (pas un mvt parce que c'est juste une impulsion sur y) 
             //vector2.up expliqué plus haut * la variable force définie en haut 
             //forcemode2d.impulse appplique direct en mode impulsion
-            
-            isGrounded = false; 
+
+            isGrounded = false;
             //on remet à l'état faux jusqu'à ce que ça capte le sol et revien en true
         }
 
@@ -157,8 +164,8 @@ public class PlayerCharacter2D : MonoBehaviour
         }
 
 
-        }
-    
+    }
+
     private void ClampVelocity() //pour vérifier qu'on dépasse pas la vitesse max sur x dont on a définit la variable tt en haut 
     {
         Vector2 velocity = playerRigidbody.velocity; //on chope la valeur de la vélocité (que le x) actuelle 
@@ -178,7 +185,7 @@ public class PlayerCharacter2D : MonoBehaviour
             playerRigidbody.velocity = Vector2.zero;
             playerRigidbody.gravityScale = 0; // Désactive la gravité temporairement
             _animator.SetBool("IsMoving", false);
-            _animator.SetBool("ForceIdle", true); 
+            _animator.SetBool("ForceIdle", true);
         }
         else
         {
@@ -190,6 +197,3 @@ public class PlayerCharacter2D : MonoBehaviour
     }
 
 }
-
-
-
