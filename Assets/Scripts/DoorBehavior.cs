@@ -9,6 +9,8 @@ public class DoorBehavior : MonoBehaviour
     Vector3 _doorOpenPos;
     public float _doorSpeed = 10f; //rapidité pour passer de l'état 1 à 2
     public float _doorHeight = 10f;
+    public Animator _animator;
+    public Collider2D _doorCollider;
 
     void Awake()
     {
@@ -30,18 +32,14 @@ public class DoorBehavior : MonoBehaviour
 
         void OpenDoor()
         {
-            if (transform.position != _doorOpenPos) //apparement pour optimiser puisque ne va pas rappeler la fonction en boucle
-            {
-                transform.position = Vector3.MoveTowards(transform.position, _doorOpenPos, _doorSpeed*Time.deltaTime); // donc si la position est pas celle de la porte ouverte (donc fermée) on va la mettre à cette position à la vitesse définie plus haut
-            }
+            _animator.SetBool("isOpen", true);
+            _doorCollider.enabled = false; // Désactive la collision
         }
 
         void CloseDoor()
         {
-            if (transform.position != _doorClosedPos)
-            {
-                transform.position = Vector3.MoveTowards(transform.position, _doorClosedPos, _doorSpeed * Time.deltaTime); 
-            }
+            _animator.SetBool("isOpen", false);
+            _doorCollider.enabled = true; // Active la collision
         }
 
     }
