@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static UnityEngine.RuleTile.TilingRuleOutput;
@@ -117,20 +118,25 @@ public class PlayerCharacter2D : MonoBehaviour
     private void UpdateGround()
     {
 
-        BoxCollider2D collider = GetComponent<BoxCollider2D>(); // On récupère la boîte
-        Vector2 origin = new Vector2(collider.bounds.center.x, collider.bounds.min.y); // Point de départ en bas du collider
+        BoxCollider2D collider = GetComponent<BoxCollider2D>();
+        Vector2 origin = new Vector2(collider.bounds.center.x, collider.bounds.min.y);
 
         RaycastHit2D hit = Physics2D.CircleCast(origin, 0.2f, Vector2.down, groundDistance, groundLayer);
-        //Raycast envoie un rayon pour capter si y'a un collider en partant du bas de l'objet auquel on a assigné le script
 
-        if (hit.collider != null) //si pas null alors a touché qqc, donc est au sol, donc je peux sauter
+        if (hit.collider != null)
         {
-            isGrounded = true; //touche collider = grounded
+            // Vérifie si on est bien AU-DESSUS de la plateforme
+            Vector2 normal = hit.normal;
+            bool isHitUpward = Vector2.Angle(normal, Vector2.up) < 45f;
+
+            if (isHitUpward)
+            {
+                isGrounded = true;
+                return;
+            }
         }
-        else
-        {
-            isGrounded = false; //touche pas collider = pas grounded
-        }
+
+        isGrounded = false;
     }
     private void OnDrawGizmos()
     {
@@ -140,7 +146,9 @@ public class PlayerCharacter2D : MonoBehaviour
         if (collider != null)
         {
             Vector2 origin = new Vector2(collider.bounds.center.x, collider.bounds.min.y);
-            Gizmos.DrawWireSphere(origin + Vector2.down * groundDistance, 0.2f);
+            Vector2 endPoint = origin + Vector2.down * groundDistance;
+
+            Gizmos.DrawLine(origin, endPoint);
         }
     }
 
@@ -195,5 +203,20 @@ public class PlayerCharacter2D : MonoBehaviour
         }
 
     }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (GetComponent<PlatformEffector2D>() != null)
+        {
+            PlatformEffector2D effector = GetComponent<PlatformEffector2D>();
+            Vector3 origin = transform.position;
+
+            Gizmos.color = Color.green;
+            // Dessine l'arc de collision
+            Vector3 dir = Quaternion.Euler(0, 0, -effector.surfaceArc * 0.5f) * Vector3.up;
+            Handles.DrawSolidArc(origin, Vector3.forward, dir, effector.surfaceArc, 0.5f);
+        }
+    }
+
 
 }
