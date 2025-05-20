@@ -11,3 +11,5 @@ public class InteractiveObjectsScriptable : ScriptableObject
     public GameObject objectModel;
     public Sprite minimodel;
 }
+
+

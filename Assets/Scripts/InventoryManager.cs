@@ -31,8 +31,8 @@ public class InventoryManager : MonoBehaviour
 
     public enum AllItems //la liste des objets qu'on peut prendre dans tout le jeu 
     {
-        KeyRed, //donc ici on peut faire une liste d'objets 
-        KeyGreen, 
-        KeyBlue,
+        Key1, //donc ici on peut faire une liste d'objets 
+        Key2, 
+        Key3,
     }
 }

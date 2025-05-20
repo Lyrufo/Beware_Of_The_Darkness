@@ -32,8 +32,7 @@ public class Password_Objects : MonoBehaviour
     [Tooltip("temps à attendre qd code bon avant de fermer auto")]
     [SerializeField] public float _delayBeforeClose = 1.5f;
 
-    [Tooltip("va  permettre de choisir la porte qu'on veut ouvrir avec ce code")]
-    public DoorBehavior targetDoor;
+    
 
     [Tooltip("la cam")]
     public CameraMovement cameraScript;
