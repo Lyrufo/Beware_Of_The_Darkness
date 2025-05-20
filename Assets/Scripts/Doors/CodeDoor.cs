@@ -183,7 +183,8 @@ public class CodeDoor : Doors
     {
          base.OpenDoor();
          _animator.SetBool("isOpen", true);
-         _doorCollider.enabled = false;
+        if (physicalCollider != null)
+            physicalCollider.enabled = false; // Désactive seulement le collider physique
     }
 
     private IEnumerator CodeFaux()

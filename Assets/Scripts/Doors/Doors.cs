@@ -15,13 +15,28 @@ public class Doors : MonoBehaviour
 
     protected bool _isOpen = false;
 
-    protected Collider2D _doorCollider;
+    [Header("Colliders")]
+    [Tooltip("Collider de déclenchement (Doit être un trigger)")]
+    public Collider2D triggerCollider; // Pour détection joueur
+
+    [Tooltip("Collider physique (ne pas cocher Is Trigger)")]
+    public Collider2D physicalCollider; // Pour bloquer le passage
 
 
     protected virtual void Awake()
-    {
-        _doorCollider = GetComponent<Collider2D>();
+    { 
         _animator = GetComponent<Animator>();
+
+        if (triggerCollider == null || physicalCollider == null) //si j'ai pas assigné oups
+        {
+            Collider2D[] colliders = GetComponents<Collider2D>();
+            if (colliders.Length >= 2)
+            {
+                // Par défaut, le premier est le trigger, le second le physique
+                triggerCollider = colliders[0];
+                physicalCollider = colliders[1];
+            }
+        }
     }
 
 
@@ -52,13 +67,15 @@ public class Doors : MonoBehaviour
     {
         _isOpen = true;
         _animator.SetBool("isOpen", true);
-        _doorCollider.enabled = false;
+        if (physicalCollider != null)
+            physicalCollider.enabled = false; // Désactive seulement le collider physique
     }
 
     public virtual void CloseDoor()
     {
         _isOpen = false;
         _animator.SetBool("isOpen", false);
-        _doorCollider.enabled = true;
+        if (physicalCollider != null)
+            physicalCollider.enabled = true;
     }
 }

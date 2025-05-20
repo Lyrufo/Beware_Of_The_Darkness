@@ -1649,6 +1649,8 @@ MonoBehaviour:
   _animator: {fileID: 808116150}
   interactionPopUp: {fileID: 1506989846}
   _playerInRange: 0
+  triggerCollider: {fileID: 808116152}
+  physicalCollider: {fileID: 808116154}
   _requiredItem: 0
 --- !u!61 &808116154
 BoxCollider2D:
@@ -5253,6 +5255,8 @@ MonoBehaviour:
   _animator: {fileID: 1194768854}
   interactionPopUp: {fileID: 1506989846}
   _playerInRange: 0
+  triggerCollider: {fileID: 1194768858}
+  physicalCollider: {fileID: 1194768859}
   EnterPasswordPanel: {fileID: 600874658}
   _currentPassword: 1234
   codeInput: {fileID: 1724643098}
@@ -6668,6 +6672,8 @@ MonoBehaviour:
   _animator: {fileID: 1718285997}
   interactionPopUp: {fileID: 1506989846}
   _playerInRange: 0
+  triggerCollider: {fileID: 1718286001}
+  physicalCollider: {fileID: 1718286002}
 --- !u!61 &1718286001
 BoxCollider2D:
   m_ObjectHideFlags: 0
