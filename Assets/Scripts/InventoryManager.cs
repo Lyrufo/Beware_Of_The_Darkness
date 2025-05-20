@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
-    public static InventoryManager Instance; //-------------------va falloir expliquer ça 
+    public static InventoryManager Instance; 
 
     public List<AllItems> _inventoryItems = new List<AllItems>(); //les objets actuellement en inventaire
 

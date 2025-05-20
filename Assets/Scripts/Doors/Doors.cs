@@ -13,8 +13,16 @@ public class Doors : MonoBehaviour
 
     public bool _playerInRange = false; //par défaut joueur pas dans la portée pour détecter 
 
+    protected bool _isOpen = false;
+
+    protected Collider2D _doorCollider;
 
 
+    protected virtual void Awake()
+    {
+        _doorCollider = GetComponent<Collider2D>();
+        _animator = GetComponent<Animator>();
+    }
 
 
     // AFFICHER E INTERACTION DONC COMMUN DOORS 
@@ -40,6 +48,17 @@ public class Doors : MonoBehaviour
 
     }
 
-    
+    public virtual void OpenDoor()
+    {
+        _isOpen = true;
+        _animator.SetBool("isOpen", true);
+        _doorCollider.enabled = false;
+    }
 
+    public virtual void CloseDoor()
+    {
+        _isOpen = false;
+        _animator.SetBool("isOpen", false);
+        _doorCollider.enabled = true;
+    }
 }

@@ -7,10 +7,6 @@ using UnityEditor;
 
 public class KeyDoor : Doors
 {
-    private bool _isKeyDoorOpen = false;
-
-    private Collider2D _keyDoorCollider;
-
     [SerializeField] InventoryManager.AllItems _requiredItem;
 
 
@@ -22,12 +18,12 @@ public class KeyDoor : Doors
             if (HasRequiredItem(_requiredItem))
             {
 
-                _isKeyDoorOpen = true;
+                _isOpen = true;
                 Interaction();
             }
             else
             {
-                _isKeyDoorOpen = false;
+                _isOpen = false;
                 Interaction();
             }
 
@@ -35,34 +31,20 @@ public class KeyDoor : Doors
 
     }
 
-
     void Interaction()
-    {
-        if (_isKeyDoorOpen)
+{
+        if (_isOpen)
         {
             _animator.SetBool("hasKey", true);
-            OpenKeyDoor();
+            OpenDoor(); // Utilise la méthode de base
         }
         else
         {
-            _animator.SetBool("hasKey", false);
-            ClosedDoor();
+        _animator.SetBool("hasKey", false);
+        _animator.SetBool("isOpen", false);
         }
-
-        void OpenKeyDoor()
-        {
-            _animator.SetBool("isKeyDoorOpen", true);
-            _keyDoorCollider.enabled = false;
-        }
-
-        void ClosedDoor()
-        {
-            _animator.SetBool("isKeyDoorOpen", false);  //voir pour jouer une seule fois 
-
-            //_keyDoorCollider.enabled = true;         Laisser collider comme il est 
-        }
-
-    }
+}
+    
 
     public bool HasRequiredItem(InventoryManager.AllItems itemRequired)
     {
