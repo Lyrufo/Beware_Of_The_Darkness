@@ -103,7 +103,7 @@ public class PlayerCharacter2D : MonoBehaviour
         }
         else //se joue ds tous les cas dès qu'il y a un mvt (lorsque xmovement =/ 0) donc ds tous si une key est pressée
         {
-            playerRigidbody.velocity += Vector2.right * xMovement * movementAcceleration * Time.deltaTime;
+            playerRigidbody.AddForce(Vector2.right * xMovement * movementAcceleration, ForceMode2D.Force);
             //ok donc ici, il s'agit d'appliquer la vitesse selon la physique (la direction et le mvt a déjà été défini plus haut)
             //velocity c'est un composant de rigidbody qui représente la vitesse (sur x et y) et donc ici on va y ajouter un mvt 
             //vector2 c'est un vecteur 2d auquel on peut donner un x et y entre -1 et 1 (x:y) mais en ajoutant .right on lock le y à 0 et le x à 1

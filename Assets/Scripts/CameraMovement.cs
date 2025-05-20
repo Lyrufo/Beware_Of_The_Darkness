@@ -45,12 +45,13 @@ public class CameraMovement : MonoBehaviour
     [Tooltip("Truc que suit la cam (donc player)")]
     public Transform target;
 
+
     [Header("Perso")]
     [Tooltip("le perso dont je vais bloquer les controles")]
     public PlayerCharacter2D character;
 
 
-
+    private Camera _mainCamera;
 
     private float initialZoom; //ça c'est juste la fenetre de base 
 
@@ -58,7 +59,8 @@ public class CameraMovement : MonoBehaviour
 
     private void Start()
     {
-        initialZoom = Camera.main.orthographicSize; //en gros le zoom de départ c'est a partir de la position et tt de la cam de base 
+        _mainCamera = Camera.main; // Stocke la référence une seule fois
+        initialZoom = _mainCamera.orthographicSize;
     }
 
     void Update() //ça c'est le basic mvt de la cam quand bah y'a pas la mort et donc le zoom qui se déclenchent
@@ -80,7 +82,7 @@ public class CameraMovement : MonoBehaviour
     {
         isZooming = true;
         float zoomTimer = 0f;
-        float startZoom = Camera.main.orthographicSize;
+        float startZoom = _mainCamera.orthographicSize;
 
         var playerController = playerTransform.GetComponent<PlayerCharacter2D>();
         if (playerController != null)
@@ -91,7 +93,7 @@ public class CameraMovement : MonoBehaviour
         while (zoomTimer < zoomDuration)
         {
 
-            Camera.main.orthographicSize = Mathf.Lerp(initialZoom, targetZoom, zoomTimer / zoomDuration); //ce qui zoom doucement la cam
+            _mainCamera.orthographicSize = Mathf.Lerp(initialZoom, targetZoom, zoomTimer / zoomDuration); //ce qui zoom doucement la cam
             transform.position = Vector3.Lerp(transform.position, //et centre ce zoom sur le joueur progressivement ausis
                 new Vector3(playerTransform.position.x, playerTransform.position.y, -10f),zoomTimer / zoomDuration);
                 
@@ -119,16 +121,16 @@ public class CameraMovement : MonoBehaviour
             character.GetComponent<Rigidbody2D>().velocity = Vector2.zero; // Stoppe tout mouvement
         }
         float elapsed = 0f;
-        float startZoom = Camera.main.orthographicSize; //ofc on appelle donc la size (genre à quel point c'est zoomé) de base de la cam "start zoom" pour y revenir 
-        Vector3 startPos = Camera.main.transform.position; //et ça c'est la position 
+        float startZoom = _mainCamera.orthographicSize; //ofc on appelle donc la size (genre à quel point c'est zoomé) de base de la cam "start zoom" pour y revenir 
+        Vector3 startPos = _mainCamera.transform.position; //et ça c'est la position 
         Vector3 endPos = new Vector3(doorTarget.position.x, doorTarget.position.y + doorYOffset, -10f); //et ça c'est la target ici la porte pour genre la fin du zoom in
 
 
         while (elapsed < doorZoomDuration)
         {
            
-            Camera.main.orthographicSize = Mathf.Lerp(startZoom, doorTargetZoom, elapsed / doorZoomDuration);
-            Camera.main.transform.position = Vector3.Lerp(startPos, endPos, elapsed / doorZoomDuration);
+            _mainCamera.orthographicSize = Mathf.Lerp(startZoom, doorTargetZoom, elapsed / doorZoomDuration);
+            _mainCamera.transform.position = Vector3.Lerp(startPos, endPos, elapsed / doorZoomDuration);
             elapsed += Time.deltaTime;
             yield return null;
         }
@@ -143,15 +145,15 @@ public class CameraMovement : MonoBehaviour
     public IEnumerator DoorZoomOut() //et paf le dezoom
     { 
         float elapsed = 0f;
-        float startZoom = Camera.main.orthographicSize;//ofc on appelle donc la size (genre à quel point c'est zoomé) de base de la cam "start zoom" pour y revenir 
+        float startZoom = _mainCamera.orthographicSize;//ofc on appelle donc la size (genre à quel point c'est zoomé) de base de la cam "start zoom" pour y revenir 
         Vector3 playerPos = new Vector3(target.position.x, target.position.y + yOffset, -10f);
-        Vector3 startPos = Camera.main.transform.position; //et ça c'est la position 
+        Vector3 startPos = _mainCamera.transform.position; //et ça c'est la position 
         Vector3 endPos = new Vector3(target.position.x, target.position.y + doorYOffset, -10f); //et ça c'est la target donc le perso pour la fin du zoom out
 
 
         while (elapsed < doorZoomDuration)
-        {Camera.main.orthographicSize = Mathf.Lerp(startZoom, initialZoom, elapsed / doorZoomDuration);
-        Camera.main.transform.position = Vector3.Lerp(startPos, endPos, elapsed / doorZoomDuration);
+        {_mainCamera.orthographicSize = Mathf.Lerp(startZoom, initialZoom, elapsed / doorZoomDuration);
+        _mainCamera.transform.position = Vector3.Lerp(startPos, endPos, elapsed / doorZoomDuration);
         elapsed += Time.deltaTime;
             
             yield return null;

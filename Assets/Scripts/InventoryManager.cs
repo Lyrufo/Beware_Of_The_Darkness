@@ -10,7 +10,10 @@ public class InventoryManager : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance != null && Instance != this)
+            Destroy(gameObject);
+        else
+            Instance = this;
     }
 
     public void AddItem(AllItems item) //pour l'ajouter à l'inv

@@ -26,6 +26,8 @@ public class Doors : MonoBehaviour
     protected virtual void Awake()
     { 
         _animator = GetComponent<Animator>();
+        if (!TryGetComponent(out _animator))
+            Debug.LogError("Animator manquant sur " + gameObject.name); //prévenir si manque dans le debug
 
         if (triggerCollider == null || physicalCollider == null) //si j'ai pas assigné oups
         {

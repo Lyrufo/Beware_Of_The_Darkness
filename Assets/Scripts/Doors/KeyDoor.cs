@@ -15,11 +15,7 @@ public class KeyDoor : Doors
     {
         if (_playerInRange && Input.GetKeyDown(KeyCode.E)) //si player dans la zone et appuie sur e
         {
-            if (_playerInRange && Input.GetKeyDown(KeyCode.E))
-            {
-                TryOpenDoor();
-            }
-
+            TryOpenDoor();
         }
 
     }
