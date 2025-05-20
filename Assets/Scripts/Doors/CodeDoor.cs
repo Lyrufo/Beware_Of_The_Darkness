@@ -153,12 +153,13 @@ public class CodeDoor : Doors
             }
 
             yield return cameraScript.StartCoroutine(cameraScript.DoorZoomIn(cameraFocusTarget)); //on lance le doorzoomIN de la cam (dans le script cam mvt)
-
             yield return new WaitForSeconds(_doorClosedViewTime); //on attend le temps défini en haut pour regarder la porte fermée 
 
             if (targetDoor != null)
             {
+                targetDoor._animator.SetTrigger("CorrectCode");
                 targetDoor.OpenDoor();
+               
             }
 
 
@@ -181,10 +182,13 @@ public class CodeDoor : Doors
 
     public override void OpenDoor()
     {
-         base.OpenDoor();
-         _animator.SetBool("isOpen", true);
+        _isOpen = true;
+        _animator.SetBool("isOpen", true);
+
         if (physicalCollider != null)
             physicalCollider.enabled = false; // Désactive seulement le collider physique
+        if (interactionPopUp != null)
+            interactionPopUp.SetActive(false); // cache définitivement l'interaction
     }
 
     private IEnumerator CodeFaux()

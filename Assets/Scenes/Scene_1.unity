@@ -706,9 +706,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abcded1a4692abd428f90398f046d7ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  doorTargetZoom: 10.1
-  doorZoomDuration: 2.76
-  doorYOffset: 0.5
+  doorTargetZoom: 2.83
+  doorZoomDuration: 1.42
+  doorYOffset: 0
   targetZoom: 12.13
   zoomDuration: 2.58
   deathAfterCamera: 3
@@ -1410,7 +1410,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.50753516, g: 0.5655841, b: 0.59119487, a: 1}
+  m_Color: {r: 0.50753516, g: 0.5655841, b: 0.59119487, a: 0.2}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5267,7 +5267,7 @@ MonoBehaviour:
   _doorClosedViewTime: 0.3
   _doorOpenViewTime: 1
   playerCharacter: {fileID: 1694937201}
-  targetDoor: {fileID: 0}
+  targetDoor: {fileID: 1194768857}
   repeatCount: 3
 --- !u!61 &1194768858
 BoxCollider2D:

@@ -44,7 +44,7 @@ public class Doors : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision) //qd qqc entre en collision
     {
-        if (collision.CompareTag("Player")) //et a le tag player
+        if (!_isOpen && collision.CompareTag("Player")) //et a le tag player
         {
             _playerInRange = true; //donc dans la zone de detection
             if (interactionPopUp != null) //ofc que dans le cas où j'ai rempli l'interactionpopup

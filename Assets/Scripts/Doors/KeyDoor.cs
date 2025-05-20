@@ -15,46 +15,36 @@ public class KeyDoor : Doors
     {
         if (_playerInRange && Input.GetKeyDown(KeyCode.E)) //si player dans la zone et appuie sur e
         {
-            if (HasRequiredItem(_requiredItem))
+            if (_playerInRange && Input.GetKeyDown(KeyCode.E))
             {
-
-                _isOpen = true;
-                Interaction();
-            }
-            else
-            {
-                _isOpen = false;
-                Interaction();
+                TryOpenDoor();
             }
 
         }
 
     }
 
-    void Interaction()
-{
-        if (_isOpen)
+    public void TryOpenDoor()
+    {
+        bool hasKey = HasRequiredItem(_requiredItem);
+
+        if (hasKey)
         {
-            _animator.SetBool("hasKey", true);
-            OpenDoor(); // Utilise la méthode de base
+            _isOpen = true;
+            _animator.SetTrigger("OpenDoor"); // Déclenche l'animation d'ouverture
+            OpenDoor(); // Gère la logique d'ouverture
         }
         else
         {
-        _animator.SetBool("hasKey", false);
-        _animator.SetBool("isOpen", false);
+            _animator.SetTrigger("TryDoor"); // Déclenche l'animation d'échec
         }
-}
+    }
+
+  
     
 
     public bool HasRequiredItem(InventoryManager.AllItems itemRequired)
     {
-        if (InventoryManager.Instance._inventoryItems.Contains(itemRequired))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return InventoryManager.Instance._inventoryItems.Contains(itemRequired);
     }
 }
