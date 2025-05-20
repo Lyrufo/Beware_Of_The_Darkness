@@ -60,15 +60,6 @@ public class SwitchBehavior : MonoBehaviour
     {
         if(collision.CompareTag("Player")) //si c'est qqc avec le tag player qui intéragit avec 
         {
-            if (HasRequiredItem(_requiredItem))
-            {
-                Debug.Log("Item requis OK");
-            }
-            else
-            {
-                Debug.LogWarning("Item requis manquant !");
-            }
-
 
             _isPressingSwitch = !_isPressingSwitch; //en gros au lieu de mettre false ou true on inverse son état et ça c'est cool donc premier check et chagenement : on inverse l'état du switch
 
