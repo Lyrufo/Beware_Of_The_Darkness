@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
+
 
 public class DeathHandler : MonoBehaviour
 {
@@ -23,6 +25,15 @@ public class DeathHandler : MonoBehaviour
     [Tooltip("L'objet représentant l'effet du monstre")]
     public GameObject monsterEffect; // Référence à l'objet de l'effet du monstre
 
+    [Tooltip("Canvas pour l'écran de mort")]
+    public Canvas deathCanvas;
+
+    [Tooltip("Image pour l'animation de mort plein écran")]
+    public Image fullScreenDeathImage;
+
+    [Tooltip("Animator de l'UI de mort")]
+    public Animator deathUIAnimator;
+
     public void HandleDeath(Transform playerTransform)
     {
         StartCoroutine(DeathSequence(playerTransform));
@@ -33,52 +44,63 @@ public class DeathHandler : MonoBehaviour
         Debug.Log("Début séquence de mort");
 
         var playerController = playerTransform.GetComponent<PlayerCharacter2D>();
+        playerController?.SetCinematicMode(true);
+
         if (playerController != null)
         {
             playerController.SetCinematicMode(true);
         }
 
-
-        Animator animator = playerTransform.GetComponent<Animator>(); //anim de mort à jouer du perso 
-        if (animator != null && !string.IsNullOrEmpty(deathAnimation))
+        if (deathCanvas != null)
         {
-            animator.Play(deathAnimation);
+            deathCanvas.gameObject.SetActive(true);
+            deathCanvas.sortingOrder = 999; // Pour être sûr qu'il soit au premier plan
         }
+
+
+       
 
         if (monsterEffect != null) // Vérifie si l'effet du monstre existe
         {
-            Animator monsterEffectAnimator = monsterEffect.GetComponent<Animator>();
-            if (monsterEffectAnimator != null && !string.IsNullOrEmpty(monsterEffectAnimationName))
-            {
+        Animator monsterEffectAnimator = monsterEffect.GetComponent<Animator>();
+        if (monsterEffectAnimator != null && !string.IsNullOrEmpty(monsterEffectAnimationName))
+        {
                 monsterEffectAnimator.Play(monsterEffectAnimationName); // Joue l'animation de l'effet du monstre
-            }
+        }
         }
 
-
-        if (deathSound != null)
+        if (fullScreenDeathImage != null)
         {
-            AudioSource.PlayClipAtPoint(deathSound, playerTransform.position); //son de mort à ajouter
-        }
+             fullScreenDeathImage.gameObject.SetActive(true);
+             if (deathUIAnimator != null)
+             {
+             deathUIAnimator.Play("FullScreenDeath", 0, 0f);
+             yield return new WaitForSeconds(deathUIAnimator.GetCurrentAnimatorStateInfo(0).length); // Durée de l'animation
+             }
 
-        foreach (GameObject ui in GameObject.FindGameObjectsWithTag("UI")) //enlever toutes les UI
-        {
-            ui.SetActive(false);
         }
 
         
-        var controls = playerTransform.GetComponent<PlayerCharacter2D>(); //desactive controles
-        if (controls != null)
-        {
-            controls.canMove = false;
-        }
+        
 
         yield return cameraMovement.ZoomAndCenterCoroutine(playerTransform); //zoom de la cam
-        yield return new WaitForSeconds(delayBeforeDestroy); // Attente après le zoom
-     
-        Destroy(playerTransform.gameObject);
-        Debug.Log("Joueur détruit après séquence de mort"); //joueur détruit 
+        foreach (GameObject ui in GameObject.FindGameObjectsWithTag("UI"))
+        {
+           ui.SetActive(false);
+        }
 
-        //respawn, game over, reload etc à ajouter ici
+        AudioSource.PlayClipAtPoint(deathSound, playerTransform.position);
+        if (monsterEffect != null)
+        {
+            monsterEffect.GetComponent<Animator>()?.Play(monsterEffectAnimationName);
+            yield return new WaitForSeconds(delayBeforeDestroy);
+        }
+
+        Destroy(playerTransform.gameObject);
+        Debug.Log("Joueur détruit");
+
+        // Reset de l'UI
+        if (deathCanvas != null) deathCanvas.gameObject.SetActive(false);
     }
 }
 

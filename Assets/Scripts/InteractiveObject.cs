@@ -51,7 +51,7 @@ public class InteractiveObject : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision) //qd qqc entre en collision
     {
-        if (collision.CompareTag("Player")) //et a le tag player
+        if (collision.CompareTag("Player") && !_hasBeenInteracted) //et a le tag player
         {
             _playerInRange = true; //donc dans la zone de detection
             if (interactionPopUp != null) //ofc que dans le cas où j'ai rempli l'interactionpopup
@@ -76,34 +76,48 @@ void Update()
     {
         if (_playerInRange && Input.GetKeyDown(KeyCode.E)) //si player dans la zone et appuie sur e
         {
-            if (!_isDescriptionOpen && data != null) //et la description est pas open et la data est pas vide (scriptable object complet
+            if (!_isDescriptionOpen && data != null && !_hasBeenInteracted) //et la description est pas open et la data est pas vide (scriptable object complet
             {
-                //rempli avec tout ça choppé dans le scriptable object
-                objectNameText.text = data.interactiveObjectName;
-                descriptionText.text = data.description;
-                objectImage.sprite = data.minimodel;
+                OpenDescription();
+                ApplyVisualChanges();
+                _hasBeenInteracted = true;
 
-                interactionPopUp.SetActive(false);
-                descriptionPanel.SetActive(true); //affiche le panel de description
-                _isDescriptionOpen = true; //met à jour létat
-                PauseGame(); 
             }
         }
         if (_isDescriptionOpen && Input.GetKeyDown(KeyCode.Escape)) //si la description est ouverte et on appuie echap
         {
-            descriptionPanel.SetActive(false); //cache panel
-            _isDescriptionOpen = false ; //met a jour l'état
-            ResumeGame();//reprend
-
-            //pour changer sprite et anim
-            if (_spriteRenderer != null && data.alternateSprite != null)
-                _spriteRenderer.sprite = data.alternateSprite;
-
-            if (objectAnimator != null)
-                objectAnimator.SetBool("Interacted", true);
-
-            _hasBeenInteracted = true;
+           CloseDescription();
         }
+    }
+
+    void OpenDescription()
+    {
+        //rempli avec tout ça choppé dans le scriptable object
+        objectNameText.text = data.interactiveObjectName;
+        descriptionText.text = data.description;
+        objectImage.sprite = data.minimodel;
+
+        interactionPopUp.SetActive(false);
+        descriptionPanel.SetActive(true); //affiche le panel de description
+        _isDescriptionOpen = true; //met à jour létat
+        PauseGame();
+    }
+
+    void CloseDescription()
+    {
+        descriptionPanel.SetActive(false); //cache panel
+        _isDescriptionOpen = false; //met a jour l'état
+        ResumeGame();//reprend
+    }
+
+    void ApplyVisualChanges()
+    {
+        //pour changer sprite et anim
+        if (_spriteRenderer != null && data.alternateSprite != null)
+            _spriteRenderer.sprite = data.alternateSprite;
+
+        if (objectAnimator != null)
+            objectAnimator.SetBool("Interacted", true);
     }
 
     void PauseGame()

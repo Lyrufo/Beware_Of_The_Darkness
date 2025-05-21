@@ -6,7 +6,7 @@ using static UnityEngine.RuleTile.TilingRuleOutput;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(SpriteRenderer))]
-[RequireComponent(typeof(BoxCollider2D))]
+[RequireComponent(typeof(Collider2D))]
 
 // force à mettre ces composants
 
@@ -102,7 +102,7 @@ public class PlayerCharacter2D : MonoBehaviour
         }
         else //se joue ds tous les cas dès qu'il y a un mvt (lorsque xmovement =/ 0) donc ds tous si une key est pressée
         {
-            playerRigidbody.AddForce(Vector2.right * xMovement * movementAcceleration, ForceMode2D.Force);
+            playerRigidbody.AddForce(Vector2.right * xMovement * movementAcceleration*Time.deltaTime, ForceMode2D.Force);
             //ok donc ici, il s'agit d'appliquer la vitesse selon la physique (la direction et le mvt a déjà été défini plus haut)
             //velocity c'est un composant de rigidbody qui représente la vitesse (sur x et y) et donc ici on va y ajouter un mvt 
             //vector2 c'est un vecteur 2d auquel on peut donner un x et y entre -1 et 1 (x:y) mais en ajoutant .right on lock le y à 0 et le x à 1
@@ -117,7 +117,7 @@ public class PlayerCharacter2D : MonoBehaviour
     private void UpdateGround()
     {
 
-        BoxCollider2D collider = GetComponent<BoxCollider2D>();
+        Collider2D collider = GetComponent<Collider2D>();
         Vector2 origin = new Vector2(collider.bounds.center.x, collider.bounds.min.y);
 
         RaycastHit2D hit = Physics2D.CircleCast(origin, 0.2f, Vector2.down, groundDistance, groundLayer);
@@ -141,7 +141,7 @@ public class PlayerCharacter2D : MonoBehaviour
     {
         Gizmos.color = Color.red;
 
-        BoxCollider2D collider = GetComponent<BoxCollider2D>();
+        Collider2D collider = GetComponent<Collider2D>();
         if (collider != null)
         {
             Vector2 origin = new Vector2(collider.bounds.center.x, collider.bounds.min.y);
@@ -201,7 +201,6 @@ public class PlayerCharacter2D : MonoBehaviour
             //playerRigidbody.gravityScale = 1; // Rétabli la gravité
             _animator.SetBool("ForceIdle", false);
             canMove = true;
-            Debug.Log("ok");
         }
 
     }
