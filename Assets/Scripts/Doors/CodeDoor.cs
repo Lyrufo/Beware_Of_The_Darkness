@@ -80,6 +80,7 @@ public class CodeDoor : Doors
         {
             if (_isEnterPasswordPanelOpen == false) //et que le truc pour entrer le password est pas ouvert
             {
+                playerCharacter.canMove= false;
                 interactionPopUp.SetActive(false); //enleve le E 
                 EnterPasswordPanel.SetActive(true); //affiche le panel de code etc
                 _isEnterPasswordPanelOpen = true; //met à jour létat
@@ -99,6 +100,7 @@ public class CodeDoor : Doors
 
         if (_isEnterPasswordPanelOpen && Input.GetKeyDown(KeyCode.Escape)) //si le password panel est ouvert et on appuie echap
         {
+            playerCharacter.canMove = true;
             EnterPasswordPanel.SetActive(false); //cache panel
             _isEnterPasswordPanelOpen = false; //met a jour l'état
             
@@ -106,7 +108,7 @@ public class CodeDoor : Doors
     }
 
 
-    // ------------------SUPPRIMER LES 2 PREMIERES PARTIES MAIS JSP COMMENT GARDER LE PLAYER NUMBER 
+    
     public void TryPassword() //hop la big boucle pour tester un mdp ; note, deja bloqué à 4 chiffres sur inspector fnumber
 
     {

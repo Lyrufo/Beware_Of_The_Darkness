@@ -190,16 +190,19 @@ public class PlayerCharacter2D : MonoBehaviour
         if (active)
         {
             canMove = false;
-            playerRigidbody.velocity = Vector2.zero;
-            playerRigidbody.gravityScale = 0; // Désactive la gravité temporairement
+            playerRigidbody.isKinematic = true;
+            //playerRigidbody.velocity = Vector2.zero;
+            //playerRigidbody.gravityScale = 0; // Désactive la gravité temporairement
             _animator.SetBool("IsMoving", false);
             _animator.SetBool("ForceIdle", true);
         }
         else
         {
-            playerRigidbody.gravityScale = 1; // Rétabli la gravité
+            playerRigidbody.isKinematic = false;
+            //playerRigidbody.gravityScale = 1; // Rétabli la gravité
             _animator.SetBool("ForceIdle", false);
             canMove = true;
+            Debug.Log("ok");
         }
 
     }
