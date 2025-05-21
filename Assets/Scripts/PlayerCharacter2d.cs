@@ -190,15 +190,12 @@ public class PlayerCharacter2D : MonoBehaviour
         {
             canMove = false;
             playerRigidbody.isKinematic = true;
-            //playerRigidbody.velocity = Vector2.zero;
-            //playerRigidbody.gravityScale = 0; // Désactive la gravité temporairement
             _animator.SetBool("IsMoving", false);
             _animator.SetBool("ForceIdle", true);
         }
         else
         {
             playerRigidbody.isKinematic = false;
-            //playerRigidbody.gravityScale = 1; // Rétabli la gravité
             _animator.SetBool("ForceIdle", false);
             canMove = true;
         }
@@ -217,6 +214,14 @@ public class PlayerCharacter2D : MonoBehaviour
             Vector3 dir = Quaternion.Euler(0, 0, -effector.surfaceArc * 0.5f) * Vector3.up;
             //Handles.DrawSolidArc(origin, Vector3.forward, dir, effector.surfaceArc, 0.5f); si besoin ajouter using unity editor
         }
+    }
+
+    public void ResetPlayer()
+    {
+        canMove = true;
+        playerRigidbody.velocity = Vector2.zero;
+        playerRigidbody.gravityScale = 1f;
+        _animator.SetTrigger("Respawn");
     }
 
 
