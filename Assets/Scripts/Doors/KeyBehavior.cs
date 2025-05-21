@@ -15,7 +15,7 @@ public class KeyBehavior : MonoBehaviour
         if (collision.CompareTag("Player")) //si la collision est avec ce qui a le tag player (donc le player logique bebou
         {
             InventoryManager.Instance.AddItem(_itemType); //on ajoute la clef à l'inv
-            Destroy(gameObject); // detruit l'objet auqel le script est attaché donc keys
+           // Destroy(gameObject); // detruit l'objet auqel le script est attaché donc keys
         }
     }
 }

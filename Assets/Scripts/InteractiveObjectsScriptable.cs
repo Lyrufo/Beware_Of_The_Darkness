@@ -10,6 +10,7 @@ public class InteractiveObjectsScriptable : ScriptableObject
     public string description;
     public GameObject objectModel;
     public Sprite minimodel;
+    public Sprite alternateSprite;
 }
 
 

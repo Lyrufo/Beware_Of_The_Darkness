@@ -26,8 +26,27 @@ public class InteractiveObject : MonoBehaviour
     [Tooltip("image sprite de l'object")]
     public Image objectImage;
 
+
+    [Header("Post-Interaction paramètres")]
+
+    [Tooltip("Référence à l'Animator de l'objet")]
+    public Animator objectAnimator;
+    
+    private SpriteRenderer _spriteRenderer;
+    private bool _hasBeenInteracted = false;
+
+
+
     private bool _playerInRange = false; //par défaut joueur pas dans la portée pour détecter 
     private bool _isDescriptionOpen = false; //si la description est deja open mais là le met direct en false
+
+    void Start()
+    {
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        if (objectAnimator != null )
+            objectAnimator.SetBool ("Interacted", false);
+    }
+
 
 
     void OnTriggerEnter2D(Collider2D collision) //qd qqc entre en collision
@@ -75,6 +94,15 @@ void Update()
             descriptionPanel.SetActive(false); //cache panel
             _isDescriptionOpen = false ; //met a jour l'état
             ResumeGame();//reprend
+
+            //pour changer sprite et anim
+            if (_spriteRenderer != null && data.alternateSprite != null)
+                _spriteRenderer.sprite = data.alternateSprite;
+
+            if (objectAnimator != null)
+                objectAnimator.SetBool("Interacted", true);
+
+            _hasBeenInteracted = true;
         }
     }
 

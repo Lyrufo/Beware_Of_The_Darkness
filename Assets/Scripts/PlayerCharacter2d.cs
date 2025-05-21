@@ -1,4 +1,3 @@
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static UnityEngine.RuleTile.TilingRuleOutput;
@@ -217,7 +216,7 @@ public class PlayerCharacter2D : MonoBehaviour
             Gizmos.color = Color.green;
             // Dessine l'arc de collision
             Vector3 dir = Quaternion.Euler(0, 0, -effector.surfaceArc * 0.5f) * Vector3.up;
-            Handles.DrawSolidArc(origin, Vector3.forward, dir, effector.surfaceArc, 0.5f);
+            //Handles.DrawSolidArc(origin, Vector3.forward, dir, effector.surfaceArc, 0.5f); si besoin ajouter using unity editor
         }
     }
 
