@@ -52,19 +52,24 @@ public class RespawnManager : MonoBehaviour
         CurrentPlayer = Instantiate(playerPrefab, _currentRespawnPoint.position, Quaternion.identity);
         CurrentPlayer.SetActive(false);
 
-        // Réinitialisation caméra avant activation joueur
         cameraMovement.target = _currentRespawnPoint;
         cameraMovement.ResetCamera();
         CurrentPlayer.SetActive(true);
 
-        // Assignation des références
         cameraMovement.target = CurrentPlayer.transform;
         deathHandler.playerTransform = CurrentPlayer.transform;
 
         var player = CurrentPlayer.GetComponent<PlayerCharacter2D>();
         player?.ResetPlayer();
 
-        // Suppression du Rebind inutile qui causait des problèmes
-        deathHandler.DeathUIAnimator?.Play("EmptyState"); // Reset à un état vide
+        // Ne manipuler l'animator QUE si le Canvas est actif
+        if (deathHandler.DeathCanvas != null && deathHandler.DeathCanvas.gameObject.activeSelf)
+        {
+            deathHandler.DeathUIAnimator?.Play("EmptyState");
+        }
+        else
+        {
+            Debug.Log("DeathCanvas désactivé - skip animation reset");
+        }
     }
 }

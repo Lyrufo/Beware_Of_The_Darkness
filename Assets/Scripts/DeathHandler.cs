@@ -40,7 +40,7 @@ public class DeathHandler : MonoBehaviour
         // Activation contrôlée du Canvas
         DeathCanvas.gameObject.SetActive(true);
         DeathCanvas.enabled = true;
-        FullScreenDeathImage.gameObject.SetActive(true);
+        fullScreenDeathImage.gameObject.SetActive(true);
 
         // Réinitialisation de l'animator
         _deathUIAnimator.Rebind();
