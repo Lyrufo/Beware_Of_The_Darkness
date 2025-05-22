@@ -27,6 +27,8 @@ public class RespawnManager : MonoBehaviour
 
     public void TriggerRespawn() => StartCoroutine(RespawnSequence());
 
+
+
     private IEnumerator RespawnSequence()
     {
         yield return new WaitForSeconds(respawnDelay);

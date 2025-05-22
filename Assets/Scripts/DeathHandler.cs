@@ -19,6 +19,8 @@ public class DeathHandler : MonoBehaviour
     private Canvas _deathCanvas;
     private Animator _deathUIAnimator;
 
+
+
     private void Awake()
     {
         // Désactivation initiale du Canvas
@@ -30,41 +32,25 @@ public class DeathHandler : MonoBehaviour
 
     private IEnumerator DeathSequence(Transform playerTransform)
     {
-        // Ajouter des vérifications de null partout
-        if (playerTransform == null) yield break;
-
-        var playerController = playerTransform.GetComponent<PlayerCharacter2D>();
-        if (playerController != null)
+        // Vérification initiale des dépendances
+        if (playerTransform == null || cameraMovement == null || respawnManager == null)
         {
-            playerController.SetCinematicMode(true);
-            playerController.playerRigidbody.velocity = Vector2.zero; // Reset velocity
-        }
-
-        // Vérifier que la caméra existe
-        if (cameraMovement == null) yield break;
-
-        // Vérifier que le Canvas existe
-        if (DeathCanvas == null)
-        {
-            Debug.LogError("DeathCanvas non trouvé!");
+            Debug.LogError("Références manquantes dans DeathHandler!");
             yield break;
         }
 
-        DeathCanvas.gameObject.SetActive(true);
-        fullScreenDeathImage.gameObject.SetActive(true);
-
-        // Vérifier l'animator
+        // [1/3] Initialisation sécurisée de l'animator
         if (DeathUIAnimator == null)
         {
             Debug.LogError("Animator de mort non trouvé!");
             yield break;
         }
 
-        // Corriger la réinitialisation de l'animator
+        // [2/3] Remplacer toutes les occurrences de _deathUIAnimator par DeathUIAnimator
         DeathUIAnimator.Rebind();
         DeathUIAnimator.Update(0f);
 
-        // Zoom caméra
+        // [3/3] Utiliser la propriété cameraMovement au lieu de _cameraMovement
         yield return StartCoroutine(cameraMovement.ZoomAndCenterCoroutine(playerTransform));
         yield return new WaitForSeconds(delayBeforeFullScreenAnim);
 
