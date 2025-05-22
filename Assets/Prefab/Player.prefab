@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8926590538879307672}
   - component: {fileID: 2491984533889903239}
+  - component: {fileID: 5074123104084008887}
   - component: {fileID: 8621723385061764510}
   - component: {fileID: 3323831873968392811}
   - component: {fileID: 6807482332966828881}
@@ -18,7 +19,7 @@ GameObject:
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -89,6 +90,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &5074123104084008887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8841324090590243263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32a98b55db84fc546965749b24a89e3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timer: 0
+  maxtime: 3
+  playerTransform: {fileID: 8926590538879307672}
+  deathHandler: {fileID: 3954826677353050885}
 --- !u!50 &8621723385061764510
 Rigidbody2D:
   serializedVersion: 4
@@ -104,7 +121,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 7.94
+  m_GravityScale: 6
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -149,10 +166,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fce531656c7c454eac21545d148932f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementAcceleration: 2700
-  maxMovementSpeed: 7
-  jumpForce: 29.4
-  fallForce: 7.25
+  movementAcceleration: 1655
+  maxMovementSpeed: 12.5
+  jumpForce: 25
   groundLayer:
     serializedVersion: 2
     m_Bits: 768
@@ -217,6 +233,5 @@ MonoBehaviour:
   deathCanvas: {fileID: 0}
   fullScreenDeathImage: {fileID: 0}
   deathUIAnimator: {fileID: 0}
-  respawnManager: {fileID: 0}
   postDeathDisplayTime: 1.5
   playerTransform: {fileID: 0}

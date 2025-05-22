@@ -234,8 +234,8 @@ public class CodeDoor : Doors
         {
             _animator.SetTrigger(triggerName);
 
-            // Attendre la durée de l'animation actuelle
-            yield return new WaitForSeconds(0.8f); //----------------------------SUIVANT LA DUREE DE l'anim 
+            float animLength = _animator.GetCurrentAnimatorStateInfo(0).length;
+            yield return new WaitForSeconds(animLength+0.2f);
         }
     }
 

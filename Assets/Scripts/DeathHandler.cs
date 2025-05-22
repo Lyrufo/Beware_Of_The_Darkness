@@ -4,8 +4,6 @@ using UnityEngine.UI;
 
 public class DeathHandler : MonoBehaviour
 {
-    [Tooltip("la cam pour zoomer")]
-    public CameraMovement cameraMovement;
 
     [Tooltip("Temps d'attente avant le fullscreen anim")]
     public float delayBeforeFullScreenAnim = 0.5f;
@@ -33,10 +31,6 @@ public class DeathHandler : MonoBehaviour
 
     [Tooltip("Animator de l'UI de mort")]
     public Animator deathUIAnimator;
-
-    [Header("Respawn")]
-    [Tooltip("Référence au RespawnManager")]
-    public RespawnManager respawnManager;
 
     [Tooltip("Durée avant respawn après la fin de l'anim")]
     public float postDeathDisplayTime = 1.5f;
@@ -114,10 +108,13 @@ public class DeathHandler : MonoBehaviour
         }
 
         //AudioSource.PlayClipAtPoint(deathSound, playerTransform.position);
-        playerTransform.gameObject.SetActive(false);
         yield return new WaitForSeconds(postDeathDisplayTime);
         respawnManager.TriggerRespawn();
 
         if (deathCanvas != null) deathCanvas.gameObject.SetActive(false);
     }
+
+    public RespawnManager respawnManager => FindObjectOfType<RespawnManager>(true);
+    public CameraMovement cameraMovement => FindObjectOfType<CameraMovement>(true);
+
 }

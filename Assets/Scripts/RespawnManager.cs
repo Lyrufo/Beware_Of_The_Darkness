@@ -24,7 +24,7 @@ public class RespawnManager : MonoBehaviour
     [Tooltip("Durée de l'animation de respawn")]
     public float respawnAnimDuration = 1.5f;
 
-    public GameObject _currentPlayer;
+    public GameObject CurrentPlayer { get; private set; }
     public Transform _currentRespawnPoint;
 
     private void Start()
@@ -64,7 +64,7 @@ public class RespawnManager : MonoBehaviour
         SpawnPlayer();
 
         // 4. Réactiver les contrôles
-        _currentPlayer.GetComponent<PlayerCharacter2D>().SetCinematicMode(false);
+        CurrentPlayer.GetComponent<PlayerCharacter2D>().SetCinematicMode(false);
 
         // 5. Réinitialiser la caméra
         cameraMovement.ResetCamera();
@@ -72,17 +72,23 @@ public class RespawnManager : MonoBehaviour
 
     private void SpawnPlayer()
     {
-        if (_currentPlayer != null) Destroy(_currentPlayer);
+        if (CurrentPlayer != null) Destroy(CurrentPlayer);
 
-        _currentPlayer = Instantiate(playerPrefab, _currentRespawnPoint.position, Quaternion.identity);
+        CurrentPlayer = Instantiate(playerPrefab, _currentRespawnPoint.position, Quaternion.identity);
+
 
         // Force l'assignation des références
-        if (cameraMovement != null) cameraMovement.target = _currentPlayer.transform;
-        if (deathHandler != null) deathHandler.playerTransform = _currentPlayer.transform;
+        if (cameraMovement != null) cameraMovement.target = CurrentPlayer.transform;
+        if (deathHandler != null) deathHandler.playerTransform = CurrentPlayer.transform;
 
         // Réinitialise le composant
-        var player = _currentPlayer.GetComponent<PlayerCharacter2D>();
-        if (player != null) player.ResetPlayer();
+        var player = CurrentPlayer.GetComponent<PlayerCharacter2D>();
+        if (player != null)
+        {
+            player.ResetPlayer(); // Réactive le player + anim
+        }
     }
+
+
 }
 

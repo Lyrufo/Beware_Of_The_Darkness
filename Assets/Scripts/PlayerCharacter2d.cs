@@ -29,15 +29,11 @@ public class PlayerCharacter2D : MonoBehaviour
     public float groundDistance = 1.1f;
 
     public Rigidbody2D playerRigidbody = null; //pour bouger
-
     private Animator _animator = null; //pour mettre les anim
-
     private SpriteRenderer _spriteRenderer = null; // pour montrer le chara sur l'écran;  = null c'est pour etre sur que en gros ça fait ref à rien dès le départ
-
     public bool canMove = true;
-
-    public bool isGrounded = false; //booléen pour savoir si je touche le sol ou pas    
-
+    public bool isGrounded = false; //booléen pour savoir si je touche le sol ou pas
+    private float _initialGravityScale = 0f;
 
     private void Awake()
     {
@@ -45,13 +41,14 @@ public class PlayerCharacter2D : MonoBehaviour
         playerRigidbody = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
-
+        _initialGravityScale = playerRigidbody.gravityScale;
     }
 
 
     private void Update()
     //à chaque frame on va appeler les 4 fonctions en dessous là
     {
+
         if (canMove) // boucle comme ça parce que si je veux bloquer les mouvements du player sans bloquer la physique plus tard 
         {
             UpdateMovement(); //met à jour le sens de l'anim 
@@ -99,7 +96,7 @@ public class PlayerCharacter2D : MonoBehaviour
         }
         else //se joue ds tous les cas dès qu'il y a un mvt (lorsque xmovement =/ 0) donc ds tous si une key est pressée
         {
-            playerRigidbody.AddForce(Vector2.right * xMovement * movementAcceleration*Time.deltaTime, ForceMode2D.Force);
+            playerRigidbody.AddForce(Vector2.right * xMovement * movementAcceleration * Time.deltaTime, ForceMode2D.Force);
             //ok donc ici, il s'agit d'appliquer la vitesse selon la physique (la direction et le mvt a déjà été défini plus haut)
             //velocity c'est un composant de rigidbody qui représente la vitesse (sur x et y) et donc ici on va y ajouter un mvt 
             //vector2 c'est un vecteur 2d auquel on peut donner un x et y entre -1 et 1 (x:y) mais en ajoutant .right on lock le y à 0 et le x à 1
@@ -168,7 +165,7 @@ public class PlayerCharacter2D : MonoBehaviour
     {
         Vector2 velocity = playerRigidbody.velocity; //on chope la valeur de la vélocité (que le x) actuelle 
 
-        velocity.x = Mathf.Clamp(velocity.x, -maxMovementSpeed, maxMovementSpeed);
+        velocity = new Vector2(Mathf.Clamp(velocity.x, -maxMovementSpeed, maxMovementSpeed), velocity.y);
         //peu importe cette valeur elle doit être égale à ... = entre les deux valeurs (le max ou son inverse si on va vers la gauche) et si c'est le cas on lui assigne le max
 
         playerRigidbody.velocity = velocity;
@@ -209,9 +206,16 @@ public class PlayerCharacter2D : MonoBehaviour
 
     public void ResetPlayer()
     {
+        Debug.Log("ResetPlayer - gravityScale: " + playerRigidbody.gravityScale);
+        if (playerRigidbody == null)
+            playerRigidbody = GetComponent<Rigidbody2D>();
+
         canMove = true;
+
         playerRigidbody.velocity = Vector2.zero;
-        playerRigidbody.gravityScale = 1f;
+        playerRigidbody.gravityScale = _initialGravityScale;
+        playerRigidbody.isKinematic = false;
+
         _animator.SetTrigger("Respawn");
     }
 
