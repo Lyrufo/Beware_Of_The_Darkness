@@ -103,8 +103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timer: 0
-  maxtime: 24.78
-  playerTransform: {fileID: 8926590538879307672}
+  maxtime: 11.8
   deathHandler: {fileID: 3954826677353050885}
 --- !u!50 &8621723385061764510
 Rigidbody2D:
@@ -176,6 +175,7 @@ MonoBehaviour:
   playerRigidbody: {fileID: 8621723385061764510}
   canMove: 0
   isGrounded: 1
+  _initialGravityScale: 0
 --- !u!70 &1535068328707259091
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -226,8 +226,6 @@ MonoBehaviour:
   delayBeforeFullScreenAnim: 0.5
   deathUIAnimDuration: 4.43
   zoomDuration: 1.49
-  deathSound: {fileID: 0}
-  monsterEffectAnimationName: MonsterEffectArrival
-  postDeathDisplayTime: 1.5
+  postDeathDisplayTime: 0
   playerTransform: {fileID: 0}
   fullScreenDeathImage: {fileID: 0}

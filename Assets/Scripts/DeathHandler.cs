@@ -54,6 +54,7 @@ public class DeathHandler : MonoBehaviour
         yield return StartCoroutine(cameraMovement.ZoomAndCenterCoroutine(playerTransform));
         yield return new WaitForSeconds(delayBeforeFullScreenAnim);
 
+        DeathCanvas.gameObject.SetActive(true);
         // Lancer l'animation
         DeathUIAnimator.SetTrigger("StartDeath");
         yield return new WaitForSeconds(deathUIAnimDuration);
