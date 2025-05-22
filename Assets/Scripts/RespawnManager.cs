@@ -31,18 +31,26 @@ public class RespawnManager : MonoBehaviour
     {
         yield return new WaitForSeconds(respawnDelay);
 
-        // Désactivation du Canvas de mort avant le respawn
-        if (deathHandler.DeathCanvas != null)
-            deathHandler.DeathCanvas.gameObject.SetActive(false);
-
-        cameraMovement.target = _currentRespawnPoint;
-        yield return new WaitForSeconds(0.5f);
+        // Réactiver la caméra AVANT le spawn
         cameraMovement.ResetCamera();
+        cameraMovement.target = _currentRespawnPoint;
+
+        yield return new WaitForSeconds(0.5f); // Laisser le temps à la caméra
 
         SpawnPlayer();
 
-        yield return new WaitForSeconds(0.1f);
-        CurrentPlayer.GetComponent<PlayerCharacter2D>().SetCinematicMode(false);
+        // Attendre la fin du frame pour éviter les conflits
+        yield return null;
+
+        if (CurrentPlayer != null)
+        {
+            var player = CurrentPlayer.GetComponent<PlayerCharacter2D>();
+            if (player != null)
+            {
+                player.SetCinematicMode(false);
+                player.playerRigidbody.gravityScale = player.InitialGravityScale; // Reset gravity
+            }
+        }
     }
 
     private void SpawnPlayer()

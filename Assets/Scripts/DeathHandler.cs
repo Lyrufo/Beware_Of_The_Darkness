@@ -30,37 +30,63 @@ public class DeathHandler : MonoBehaviour
 
     private IEnumerator DeathSequence(Transform playerTransform)
     {
+        // Ajouter des vérifications de null partout
+        if (playerTransform == null) yield break;
+
         var playerController = playerTransform.GetComponent<PlayerCharacter2D>();
-        playerController?.SetCinematicMode(true);
+        if (playerController != null)
+        {
+            playerController.SetCinematicMode(true);
+            playerController.playerRigidbody.velocity = Vector2.zero; // Reset velocity
+        }
 
-        // Désactivation UI
-        foreach (GameObject ui in GameObject.FindGameObjectsWithTag("UI"))
-            ui.SetActive(false);
+        // Vérifier que la caméra existe
+        if (cameraMovement == null) yield break;
 
-        // Activation contrôlée du Canvas
+        // Vérifier que le Canvas existe
+        if (DeathCanvas == null)
+        {
+            Debug.LogError("DeathCanvas non trouvé!");
+            yield break;
+        }
+
         DeathCanvas.gameObject.SetActive(true);
-        DeathCanvas.enabled = true;
         fullScreenDeathImage.gameObject.SetActive(true);
 
-        // Réinitialisation de l'animator
-        _deathUIAnimator.Rebind();
-        _deathUIAnimator.Update(0f);
+        // Vérifier l'animator
+        if (DeathUIAnimator == null)
+        {
+            Debug.LogError("Animator de mort non trouvé!");
+            yield break;
+        }
+
+        // Corriger la réinitialisation de l'animator
+        DeathUIAnimator.Rebind();
+        DeathUIAnimator.Update(0f);
 
         // Zoom caméra
-        yield return StartCoroutine(_cameraMovement.ZoomAndCenterCoroutine(playerTransform));
+        yield return StartCoroutine(cameraMovement.ZoomAndCenterCoroutine(playerTransform));
         yield return new WaitForSeconds(delayBeforeFullScreenAnim);
 
-        // Lancement animation
-        _deathUIAnimator.SetTrigger("StartDeath");
+        // Lancer l'animation
+        DeathUIAnimator.SetTrigger("StartDeath");
         yield return new WaitForSeconds(deathUIAnimDuration);
 
-        // Pause sur dernière frame
-        _deathUIAnimator.enabled = false;
+        // Pause finale
         yield return new WaitForSeconds(postDeathDisplayTime);
 
         // Nettoyage
         DeathCanvas.gameObject.SetActive(false);
-        _respawnManager.TriggerRespawn();
+
+        // Vérifier le respawn manager
+        if (respawnManager != null)
+        {
+            respawnManager.TriggerRespawn();
+        }
+        else
+        {
+            Debug.LogError("RespawnManager non trouvé!");
+        }
     }
 
     #region Propriétés optimisées

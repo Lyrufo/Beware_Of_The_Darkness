@@ -14,13 +14,22 @@ public class TimerDieAndRespawn : MonoBehaviour
 
     void Update()
     {
-        if (!deathHandler || !deathHandler.respawnManager.CurrentPlayer) return;
+        if (!deathHandler ||
+       !deathHandler.respawnManager ||
+       !deathHandler.respawnManager.CurrentPlayer) return;
 
         var player = deathHandler.respawnManager.CurrentPlayer.GetComponent<PlayerCharacter2D>();
-        if (player.canMove && (timer += Time.deltaTime) > maxtime)
+        if (player == null) return;
+
+        if (player.canMove)
         {
-            deathHandler.HandleDeath(deathHandler.respawnManager.CurrentPlayer.transform);
-            enabled = false;
+            timer += Time.deltaTime;
+            if (timer > maxtime)
+            {
+                deathHandler.HandleDeath(deathHandler.respawnManager.CurrentPlayer.transform);
+                timer = 0f;
+                enabled = false;
+            }
         }
     }
 }

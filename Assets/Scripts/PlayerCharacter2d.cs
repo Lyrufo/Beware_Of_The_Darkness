@@ -33,7 +33,8 @@ public class PlayerCharacter2D : MonoBehaviour
     private SpriteRenderer _spriteRenderer = null; // pour montrer le chara sur l'écran;  = null c'est pour etre sur que en gros ça fait ref à rien dès le départ
     public bool canMove = true;
     public bool isGrounded = false; //booléen pour savoir si je touche le sol ou pas
-    private float _initialGravityScale = 0f;
+    [SerializeField] private float _initialGravityScale = 0f; // Rendre visible dans l'inspector
+    public float InitialGravityScale => _initialGravityScale;
 
     private void Awake()
     {
@@ -177,16 +178,16 @@ public class PlayerCharacter2D : MonoBehaviour
         if (active)
         {
             canMove = false;
-            playerRigidbody.isKinematic = true;
+            playerRigidbody.velocity = Vector2.zero; // Reset movement
+            playerRigidbody.gravityScale = 0f; // Empêcher la chute
             _animator.SetBool("IsMoving", false);
-            _animator.SetBool("ForceIdle", true);
         }
         else
         {
-            playerRigidbody.isKinematic = false;
-            _animator.SetBool("ForceIdle", false);
+            playerRigidbody.gravityScale = _initialGravityScale;
             canMove = true;
         }
+        playerRigidbody.isKinematic = active;
 
     }
 
