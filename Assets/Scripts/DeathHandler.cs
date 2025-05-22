@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class DeathHandler : MonoBehaviour
 {
-
     [Tooltip("Temps d'attente avant le fullscreen anim")]
     public float delayBeforeFullScreenAnim = 0.5f;
 
@@ -27,14 +26,7 @@ public class DeathHandler : MonoBehaviour
     public Transform playerTransform;
 
     [Tooltip("Image pour l'animation de mort plein écran")]
-    [System.NonSerialized] public Image fullScreenDeathImage;
-
-    [Tooltip("Animator de l'UI de mort")]
-    [System.NonSerialized] public Animator deathUIAnimator;
-
-    //[Tooltip("L'objet représentant l'effet du monstre")]
-    //[System.NonSerialized] public GameObject monsterEffect;
-
+    public Image fullScreenDeathImage; // Retiré System.NonSerialized
 
     private RespawnManager _respawnManager;
     public RespawnManager respawnManager => _respawnManager ??= FindObjectOfType<RespawnManager>(true);
@@ -43,13 +35,49 @@ public class DeathHandler : MonoBehaviour
     public CameraMovement cameraMovement => _cameraMovement ??= FindObjectOfType<CameraMovement>(true);
 
     private Canvas _deathCanvas;
-    public Canvas DeathCanvas => _deathCanvas ??= FindObjectOfType<Canvas>(true);
+    public Canvas DeathCanvas
+    {
+        get
+        {
+            if (_deathCanvas == null)
+            {
+                // Nouvelle méthode de recherche incluant les objets inactifs
+                Canvas[] allCanvases = Resources.FindObjectsOfTypeAll<Canvas>();
+                foreach (Canvas canvas in allCanvases)
+                {
+                    if (canvas.CompareTag("DeathCanvas"))
+                    {
+                        _deathCanvas = canvas;
+                        break;
+                    }
+                }
+            }
+            return _deathCanvas;
+        }
+    }
 
     private Image _fullScreenDeathImage;
     public Image FullScreenDeathImage => _fullScreenDeathImage ??= DeathCanvas?.GetComponentInChildren<Image>(true);
 
     private Animator _deathUIAnimator;
-    public Animator DeathUIAnimator => _deathUIAnimator ??= DeathCanvas?.GetComponentInChildren<Animator>(true);
+    public Animator DeathUIAnimator
+    {
+        get
+        {
+            if (_deathUIAnimator == null && DeathCanvas != null)
+            {
+                _deathUIAnimator = DeathCanvas.GetComponentInChildren<Animator>(true);
+
+                // Debug critique pour vérification
+                if (_deathUIAnimator == null)
+                {
+                    Debug.LogError("Animator manquant sur le FullScreenDeathImage ! Vérifiez : " +
+                                  FullScreenDeathImage?.gameObject.name);
+                }
+            }
+            return _deathUIAnimator;
+        }
+    }
 
     public void HandleDeath(Transform playerTransform)
     {
@@ -77,64 +105,65 @@ public class DeathHandler : MonoBehaviour
 
         if (DeathCanvas != null)
         {
+            // Activation FORCÉE dans l'ordre correct
             DeathCanvas.gameObject.SetActive(true);
             DeathCanvas.enabled = true;
-            LayoutRebuilder.ForceRebuildLayoutImmediate(DeathCanvas.GetComponent<RectTransform>());
+
+            Debug.Log($"DeathCanvas activé : {DeathCanvas.gameObject.activeSelf}"); // Debug 1
+
+            if (FullScreenDeathImage != null)
+            {
+                FullScreenDeathImage.gameObject.SetActive(true);
+                FullScreenDeathImage.enabled = true;
+            }
+
+            // Vérification finale de l'Animator
+            if (DeathUIAnimator == null)
+            {
+                Debug.LogError("ERREUR CRITIQUE - Animator non trouvé après activation !");
+                yield break;
+            }
+
+            DeathUIAnimator.Rebind();
+            DeathUIAnimator.Update(0f);
+            DeathCanvas.GetComponent<CanvasGroup>().alpha = 1;
         }
-        else if (DeathCanvas == null)
+        else
         {
-            Debug.Log("deathcanvanull");
+            Debug.LogError("DeathCanvas non trouvé ! Vérifiez le tag 'DeathCanvas'");
+            yield break;
         }
 
-        //if (monsterEffect != null)
-        //{
-        //Animator monsterEffectAnimator = monsterEffect.GetComponent<Animator>();
-        //if (monsterEffectAnimator != null && !string.IsNullOrEmpty(monsterEffectAnimationName))
-        //{
-        //monsterEffectAnimator.Play(monsterEffectAnimationName);
-        //}
-        //}
-
-        if (fullScreenDeathImage != null)
-        {
-
-            FullScreenDeathImage.gameObject.SetActive(true);
-            FullScreenDeathImage.SetAllDirty();
-        }
-        else if (DeathCanvas == null)
-        {
-            Debug.Log("fullscreendeathimage null");
-        }
-
-
-        // Zoom caméra
+        // Début de la séquence d'animation
         Coroutine zoomCoroutine = StartCoroutine(cameraMovement.ZoomAndCenterCoroutine(playerTransform));
-
-        // Attends 0.5s avant de lancer l'anim plein écran
         yield return new WaitForSeconds(0.5f);
 
-        // Séquence propre d'activation du canvas + anim pour éviter les premières frames doublées
-        if (deathUIAnimator != null)
+        // CORRECTION MAJEURE : Utilisation de la propriété avec majuscule
+        if (DeathUIAnimator != null)
         {
-            deathUIAnimator.enabled = true;
-            deathUIAnimator.Play("FullScreenDeathAnim", 0, 0f);
+            Debug.Log($"Lancement animation sur : {DeathUIAnimator.gameObject.name}"); // Debug 2
+            DeathUIAnimator.enabled = true;
+            DeathUIAnimator.SetTrigger("StartDeath");
+
+            // Vérification du déclenchement
+            Debug.Log($"Animation en cours : {DeathUIAnimator.GetCurrentAnimatorStateInfo(0).IsName("FullScreenDeathAnim")}");
+        }
+        else
+        {
+            Debug.LogError("Animator non disponible au moment du déclenchement !");
         }
 
         float remainingDuration = deathUIAnimDuration - (delayBeforeFullScreenAnim + zoomDuration);
         yield return new WaitForSeconds(Mathf.Max(remainingDuration, 0f));
 
-        if (deathUIAnimator != null)
+        if (DeathUIAnimator != null)
         {
-            deathUIAnimator.enabled = false;
+            DeathUIAnimator.enabled = false;
         }
 
-        //AudioSource.PlayClipAtPoint(deathSound, playerTransform.position);
         yield return new WaitForSeconds(postDeathDisplayTime);
         respawnManager.TriggerRespawn();
 
         if (DeathCanvas != null) DeathCanvas.gameObject.SetActive(false);
     }
-
-
-
 }

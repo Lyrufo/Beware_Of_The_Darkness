@@ -52,9 +52,9 @@ public class RespawnManager : MonoBehaviour
     {
         yield return new WaitForSeconds(respawnDelay);
 
-        if (deathHandler.deathUIAnimator != null)
+        if (deathHandler.DeathUIAnimator != null)
         {
-            deathHandler.deathUIAnimator.Play("RespawnTransitionAnim");
+            deathHandler.DeathUIAnimator.Play("RespawnTransitionAnim");
             yield return new WaitForSeconds(respawnAnimDuration);
         }
         cameraMovement.target = _currentRespawnPoint;
@@ -94,7 +94,8 @@ public class RespawnManager : MonoBehaviour
         }
         if (deathHandler != null)
         {
-            deathHandler.playerTransform = CurrentPlayer.transform; // Assignation dynamique
+            deathHandler.playerTransform = CurrentPlayer.transform;
+            deathHandler.DeathUIAnimator.Rebind(); // Reset l'animator à chaque respawn
         }
     }
 
