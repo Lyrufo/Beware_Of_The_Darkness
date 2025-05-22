@@ -90,6 +90,11 @@ public class RespawnManager : MonoBehaviour
         if (player != null)
         {
             player.ResetPlayer(); // Réactive le player + anim
+
+        }
+        if (deathHandler != null)
+        {
+            deathHandler.playerTransform = CurrentPlayer.transform; // Assignation dynamique
         }
     }
 

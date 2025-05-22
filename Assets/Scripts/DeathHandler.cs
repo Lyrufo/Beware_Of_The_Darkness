@@ -26,9 +26,6 @@ public class DeathHandler : MonoBehaviour
     [Tooltip("Transform du joueur")]
     public Transform playerTransform;
 
-    [Tooltip("Canvas pour l'écran de mort")]
-    [System.NonSerialized] public Canvas DeathCanvas;
-
     [Tooltip("Image pour l'animation de mort plein écran")]
     [System.NonSerialized] public Image fullScreenDeathImage;
 
@@ -45,29 +42,17 @@ public class DeathHandler : MonoBehaviour
     private CameraMovement _cameraMovement;
     public CameraMovement cameraMovement => _cameraMovement ??= FindObjectOfType<CameraMovement>(true);
 
+    private Canvas _deathCanvas;
+    public Canvas DeathCanvas => _deathCanvas ??= FindObjectOfType<Canvas>(true);
 
+    private Image _fullScreenDeathImage;
+    public Image FullScreenDeathImage => _fullScreenDeathImage ??= DeathCanvas?.GetComponentInChildren<Image>(true);
 
-    void InitializeReferences()
-    {
-        if (DeathCanvas == null)
-            DeathCanvas = GameObject.FindWithTag("DeathCanvas")?.GetComponent<Canvas>();
-
-        if (DeathCanvas != null)
-        {
-            if (fullScreenDeathImage == null)
-                fullScreenDeathImage = DeathCanvas.GetComponentInChildren<Image>(true);
-
-            if (deathUIAnimator == null)
-                deathUIAnimator = DeathCanvas.GetComponentInChildren<Animator>(true);
-        }
-
-        //if (monsterEffect == null)
-            //monsterEffect = GameObject.FindWithTag("MonsterEffect");
-    }
+    private Animator _deathUIAnimator;
+    public Animator DeathUIAnimator => _deathUIAnimator ??= DeathCanvas?.GetComponentInChildren<Animator>(true);
 
     public void HandleDeath(Transform playerTransform)
     {
-        InitializeReferences(); // Initialisation au moment de la mort
         StartCoroutine(DeathSequence(playerTransform));
     }
 
@@ -93,7 +78,8 @@ public class DeathHandler : MonoBehaviour
         if (DeathCanvas != null)
         {
             DeathCanvas.gameObject.SetActive(true);
-            DeathCanvas.sortingOrder = 999; // Pour être sûr qu'il soit au premier plan
+            DeathCanvas.enabled = true;
+            LayoutRebuilder.ForceRebuildLayoutImmediate(DeathCanvas.GetComponent<RectTransform>());
         }
         else if (DeathCanvas == null)
         {
@@ -112,16 +98,8 @@ public class DeathHandler : MonoBehaviour
         if (fullScreenDeathImage != null)
         {
 
-            if (deathUIAnimator != null)
-            {
-                deathUIAnimator.enabled = false;
-
-                fullScreenDeathImage.gameObject.SetActive(true);
-            }
-            else if (deathUIAnimator == null)
-            {
-                Debug.Log("deathUiAnimator null"); 
-            }
+            FullScreenDeathImage.gameObject.SetActive(true);
+            FullScreenDeathImage.SetAllDirty();
         }
         else if (DeathCanvas == null)
         {
