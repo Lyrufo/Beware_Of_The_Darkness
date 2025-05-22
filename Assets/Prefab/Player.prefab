@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 3323831873968392811}
   - component: {fileID: 6807482332966828881}
   - component: {fileID: 1535068328707259091}
-  - component: {fileID: 1165212937813749017}
   - component: {fileID: 3954826677353050885}
   m_Layer: 3
   m_Name: Player
@@ -196,22 +195,6 @@ CapsuleCollider2D:
   m_Offset: {x: -0.11057072, y: -0.7772467}
   m_Size: {x: 1.0214127, y: 3.6531327}
   m_Direction: 0
---- !u!114 &1165212937813749017
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8841324090590243263}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32a98b55db84fc546965749b24a89e3a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timer: 94.21
-  maxtime: 79.6
-  playerTransform: {fileID: 8926590538879307672}
-  deathHandler: {fileID: 3954826677353050885}
 --- !u!114 &3954826677353050885
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -236,4 +219,4 @@ MonoBehaviour:
   deathUIAnimator: {fileID: 0}
   respawnManager: {fileID: 0}
   postDeathDisplayTime: 1.5
-  playerTransform: {fileID: 8926590538879307672}
+  playerTransform: {fileID: 0}

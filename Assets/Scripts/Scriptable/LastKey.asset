@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3be8319ad4e8c7f4ca396e1955dc05b3, type: 3}
+  m_Name: LastKey
+  m_EditorClassIdentifier: 
+  interactiveObjectName: Clef
+  description: Une clef doree, la porte qu'elle ouvre ne doit pas etre loin
+  objectModel: {fileID: 0}
+  minimodel: {fileID: 21300000, guid: d821ed167d3bf4244803255d7914ce3b, type: 3}
+  alternateSprite: {fileID: -1272025308, guid: 06b4ff59f90e00e438f35e03ad942618, type: 3}

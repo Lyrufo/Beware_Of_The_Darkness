@@ -25,7 +25,7 @@ public class RespawnManager : MonoBehaviour
     public float respawnAnimDuration = 1.5f;
 
     public GameObject _currentPlayer;
-    private Transform _currentRespawnPoint;
+    public Transform _currentRespawnPoint;
 
     private void Start()
     {
@@ -72,14 +72,17 @@ public class RespawnManager : MonoBehaviour
 
     private void SpawnPlayer()
     {
-        if (_currentPlayer != null)
-        {
-            Destroy(_currentPlayer);
-        }
+        if (_currentPlayer != null) Destroy(_currentPlayer);
 
         _currentPlayer = Instantiate(playerPrefab, _currentRespawnPoint.position, Quaternion.identity);
-        cameraMovement.target = _currentPlayer.transform;
-        deathHandler.playerTransform = _currentPlayer.transform;
+
+        // Force l'assignation des références
+        if (cameraMovement != null) cameraMovement.target = _currentPlayer.transform;
+        if (deathHandler != null) deathHandler.playerTransform = _currentPlayer.transform;
+
+        // Réinitialise le composant
+        var player = _currentPlayer.GetComponent<PlayerCharacter2D>();
+        if (player != null) player.ResetPlayer();
     }
 }
 
