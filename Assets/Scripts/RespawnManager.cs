@@ -50,24 +50,22 @@ public class RespawnManager : MonoBehaviour
 
     private IEnumerator RespawnSequence()
     {
-        // 1. Attendre le temps défini
         yield return new WaitForSeconds(respawnDelay);
 
-        // 2. Jouer l'animation de transition
         if (deathHandler.deathUIAnimator != null)
         {
             deathHandler.deathUIAnimator.Play("RespawnTransitionAnim");
             yield return new WaitForSeconds(respawnAnimDuration);
         }
+        cameraMovement.target = _currentRespawnPoint;
+        yield return new WaitForSeconds(0.5f);
+        cameraMovement.ResetCamera();
 
-        // 3. Respawn le joueur
         SpawnPlayer();
 
-        // 4. Réactiver les contrôles
+        // Nouveau délai pour laisser la caméra se réinitialiser
+        yield return new WaitForSeconds(0.1f);
         CurrentPlayer.GetComponent<PlayerCharacter2D>().SetCinematicMode(false);
-
-        // 5. Réinitialiser la caméra
-        cameraMovement.ResetCamera();
     }
 
     private void SpawnPlayer()
@@ -75,7 +73,13 @@ public class RespawnManager : MonoBehaviour
         if (CurrentPlayer != null) Destroy(CurrentPlayer);
 
         CurrentPlayer = Instantiate(playerPrefab, _currentRespawnPoint.position, Quaternion.identity);
+        CurrentPlayer.SetActive(false);
 
+        cameraMovement.target = _currentRespawnPoint;
+        cameraMovement.ResetCamera();
+
+        CurrentPlayer.SetActive(true);
+        if (cameraMovement != null) cameraMovement.target = CurrentPlayer.transform;
 
         // Force l'assignation des références
         if (cameraMovement != null) cameraMovement.target = CurrentPlayer.transform;

@@ -20,26 +20,54 @@ public class DeathHandler : MonoBehaviour
     [Tooltip("Nom de l'animation d'arrivée du monstre")]
     public string monsterEffectAnimationName = "MonsterEffectArrival";
 
-    [Tooltip("L'objet représentant l'effet du monstre")]
-    public GameObject monsterEffect;
-
-    [Tooltip("Canvas pour l'écran de mort")]
-    public Canvas deathCanvas;
-
-    [Tooltip("Image pour l'animation de mort plein écran")]
-    public Image fullScreenDeathImage;
-
-    [Tooltip("Animator de l'UI de mort")]
-    public Animator deathUIAnimator;
-
     [Tooltip("Durée avant respawn après la fin de l'anim")]
     public float postDeathDisplayTime = 1.5f;
 
     [Tooltip("Transform du joueur")]
     public Transform playerTransform;
 
+    [Tooltip("Canvas pour l'écran de mort")]
+    [System.NonSerialized] public Canvas DeathCanvas;
+
+    [Tooltip("Image pour l'animation de mort plein écran")]
+    [System.NonSerialized] public Image fullScreenDeathImage;
+
+    [Tooltip("Animator de l'UI de mort")]
+    [System.NonSerialized] public Animator deathUIAnimator;
+
+    //[Tooltip("L'objet représentant l'effet du monstre")]
+    //[System.NonSerialized] public GameObject monsterEffect;
+
+
+    private RespawnManager _respawnManager;
+    public RespawnManager respawnManager => _respawnManager ??= FindObjectOfType<RespawnManager>(true);
+
+    private CameraMovement _cameraMovement;
+    public CameraMovement cameraMovement => _cameraMovement ??= FindObjectOfType<CameraMovement>(true);
+
+
+
+    void InitializeReferences()
+    {
+        if (DeathCanvas == null)
+            DeathCanvas = GameObject.FindWithTag("DeathCanvas")?.GetComponent<Canvas>();
+
+        if (DeathCanvas != null)
+        {
+            if (fullScreenDeathImage == null)
+                fullScreenDeathImage = DeathCanvas.GetComponentInChildren<Image>(true);
+
+            if (deathUIAnimator == null)
+                deathUIAnimator = DeathCanvas.GetComponentInChildren<Animator>(true);
+        }
+
+        //if (monsterEffect == null)
+            //monsterEffect = GameObject.FindWithTag("MonsterEffect");
+    }
+
     public void HandleDeath(Transform playerTransform)
     {
+        InitializeReferences(); // Initialisation au moment de la mort
         StartCoroutine(DeathSequence(playerTransform));
     }
 
@@ -62,29 +90,44 @@ public class DeathHandler : MonoBehaviour
             ui.SetActive(false);
         }
 
-        if (deathCanvas != null)
+        if (DeathCanvas != null)
         {
-            deathCanvas.gameObject.SetActive(true);
-            deathCanvas.sortingOrder = 999; // Pour être sûr qu'il soit au premier plan
+            DeathCanvas.gameObject.SetActive(true);
+            DeathCanvas.sortingOrder = 999; // Pour être sûr qu'il soit au premier plan
+        }
+        else if (DeathCanvas == null)
+        {
+            Debug.Log("deathcanvanull");
         }
 
-        if (monsterEffect != null)
-        {
-            Animator monsterEffectAnimator = monsterEffect.GetComponent<Animator>();
-            if (monsterEffectAnimator != null && !string.IsNullOrEmpty(monsterEffectAnimationName))
-            {
-                monsterEffectAnimator.Play(monsterEffectAnimationName);
-            }
-        }
+        //if (monsterEffect != null)
+        //{
+        //Animator monsterEffectAnimator = monsterEffect.GetComponent<Animator>();
+        //if (monsterEffectAnimator != null && !string.IsNullOrEmpty(monsterEffectAnimationName))
+        //{
+        //monsterEffectAnimator.Play(monsterEffectAnimationName);
+        //}
+        //}
 
         if (fullScreenDeathImage != null)
         {
- 
+
             if (deathUIAnimator != null)
+            {
                 deathUIAnimator.enabled = false;
 
-            fullScreenDeathImage.gameObject.SetActive(true);
+                fullScreenDeathImage.gameObject.SetActive(true);
+            }
+            else if (deathUIAnimator == null)
+            {
+                Debug.Log("deathUiAnimator null"); 
+            }
         }
+        else if (DeathCanvas == null)
+        {
+            Debug.Log("fullscreendeathimage null");
+        }
+
 
         // Zoom caméra
         Coroutine zoomCoroutine = StartCoroutine(cameraMovement.ZoomAndCenterCoroutine(playerTransform));
@@ -111,10 +154,9 @@ public class DeathHandler : MonoBehaviour
         yield return new WaitForSeconds(postDeathDisplayTime);
         respawnManager.TriggerRespawn();
 
-        if (deathCanvas != null) deathCanvas.gameObject.SetActive(false);
+        if (DeathCanvas != null) DeathCanvas.gameObject.SetActive(false);
     }
 
-    public RespawnManager respawnManager => FindObjectOfType<RespawnManager>(true);
-    public CameraMovement cameraMovement => FindObjectOfType<CameraMovement>(true);
+
 
 }

@@ -44,6 +44,7 @@ public class CameraMovement : MonoBehaviour
     private float initialZoom; //ça c'est juste la fenetre de base 
     public bool isZooming = false;
 
+
     private void Start()
     {
         _mainCamera = Camera.main;
@@ -62,6 +63,17 @@ public class CameraMovement : MonoBehaviour
     public void ResetCamera()
     {
         isZooming = false;
+        if (_mainCamera != null)
+        {
+            _mainCamera.orthographicSize = initialZoom;
+        }
+
+        // Réactivation du suivi naturel
+        if (target != null)
+        {
+            Vector3 newPos = new Vector3(target.position.x, target.position.y + yOffset, -10f);
+            transform.position = newPos;
+        }
     }
 
     public IEnumerator ZoomAndCenterCoroutine(Transform playerTransform) //choppe la coroutine et la pos et tt du player
