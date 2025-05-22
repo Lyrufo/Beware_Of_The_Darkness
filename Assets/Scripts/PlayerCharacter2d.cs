@@ -217,6 +217,8 @@ public class PlayerCharacter2D : MonoBehaviour
         playerRigidbody.isKinematic = false;
 
         _animator.SetTrigger("Respawn");
+        _animator.Rebind();
+        _animator.Update(0f);
     }
 
 

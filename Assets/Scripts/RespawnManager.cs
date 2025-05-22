@@ -1,69 +1,46 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RespawnManager : MonoBehaviour
 {
     [Header("Références")]
-    [Tooltip("Point de respawn par défaut")]
     public Transform defaultRespawnPoint;
-
-    [Tooltip("Prefab du joueur")]
     public GameObject playerPrefab;
-
-    [Tooltip("Référence à DeathHandler")]
     public DeathHandler deathHandler;
-
-    [Tooltip("Référence à CameraMovement")]
     public CameraMovement cameraMovement;
 
     [Header("Timings")]
-    [Tooltip("Temps avant respawn après la mort")]
     public float respawnDelay = 2f;
-
-    [Tooltip("Durée de l'animation de respawn")]
     public float respawnAnimDuration = 1.5f;
 
     public GameObject CurrentPlayer { get; private set; }
-    public Transform _currentRespawnPoint;
+    private Transform _currentRespawnPoint;
 
     private void Start()
     {
         _currentRespawnPoint = defaultRespawnPoint;
-        if (playerPrefab == null)
-        {
-            Debug.LogError("Player Prefab non assigné dans RespawnManager!");
-            return;
-        }
+        if (playerPrefab == null) Debug.LogError("Player Prefab non assigné!");
         SpawnPlayer();
     }
 
-    public void SetRespawnPoint(Transform newPoint)
-    {
-        _currentRespawnPoint = newPoint;
-    }
+    public void SetRespawnPoint(Transform newPoint) => _currentRespawnPoint = newPoint;
 
-    public void TriggerRespawn()
-    {
-        StartCoroutine(RespawnSequence());
-    }
+    public void TriggerRespawn() => StartCoroutine(RespawnSequence());
 
     private IEnumerator RespawnSequence()
     {
         yield return new WaitForSeconds(respawnDelay);
 
-        if (deathHandler.DeathUIAnimator != null)
-        {
-            deathHandler.DeathUIAnimator.Play("RespawnTransitionAnim");
-            yield return new WaitForSeconds(respawnAnimDuration);
-        }
+        // Désactivation du Canvas de mort avant le respawn
+        if (deathHandler.DeathCanvas != null)
+            deathHandler.DeathCanvas.gameObject.SetActive(false);
+
         cameraMovement.target = _currentRespawnPoint;
         yield return new WaitForSeconds(0.5f);
         cameraMovement.ResetCamera();
 
         SpawnPlayer();
 
-        // Nouveau délai pour laisser la caméra se réinitialiser
         yield return new WaitForSeconds(0.1f);
         CurrentPlayer.GetComponent<PlayerCharacter2D>().SetCinematicMode(false);
     }
@@ -75,30 +52,19 @@ public class RespawnManager : MonoBehaviour
         CurrentPlayer = Instantiate(playerPrefab, _currentRespawnPoint.position, Quaternion.identity);
         CurrentPlayer.SetActive(false);
 
+        // Réinitialisation caméra avant activation joueur
         cameraMovement.target = _currentRespawnPoint;
         cameraMovement.ResetCamera();
-
         CurrentPlayer.SetActive(true);
-        if (cameraMovement != null) cameraMovement.target = CurrentPlayer.transform;
 
-        // Force l'assignation des références
-        if (cameraMovement != null) cameraMovement.target = CurrentPlayer.transform;
-        if (deathHandler != null) deathHandler.playerTransform = CurrentPlayer.transform;
+        // Assignation des références
+        cameraMovement.target = CurrentPlayer.transform;
+        deathHandler.playerTransform = CurrentPlayer.transform;
 
-        // Réinitialise le composant
         var player = CurrentPlayer.GetComponent<PlayerCharacter2D>();
-        if (player != null)
-        {
-            player.ResetPlayer(); // Réactive le player + anim
+        player?.ResetPlayer();
 
-        }
-        if (deathHandler != null)
-        {
-            deathHandler.playerTransform = CurrentPlayer.transform;
-            deathHandler.DeathUIAnimator.Rebind(); // Reset l'animator à chaque respawn
-        }
+        // Suppression du Rebind inutile qui causait des problèmes
+        deathHandler.DeathUIAnimator?.Play("EmptyState"); // Reset à un état vide
     }
-
-
 }
-
