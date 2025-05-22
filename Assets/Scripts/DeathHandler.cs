@@ -71,7 +71,7 @@ public class DeathHandler : MonoBehaviour
         // 3. Attendre la fin de l’animation de mort
         yield return new WaitForSeconds(deathUIAnimDuration);
 
-        yield return new WaitForSeconds(postDeathDisplayTime);
+        //yield return new WaitForSeconds(postDeathDisplayTime);
 
         DeathCanvas.gameObject.SetActive(false);
 

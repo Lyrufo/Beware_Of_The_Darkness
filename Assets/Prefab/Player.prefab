@@ -223,9 +223,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da8a8fb867ad87b4787ae7834946e450, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delayBeforeFullScreenAnim: 0.5
+  delayBeforeFullScreenAnim: 0.89
   deathUIAnimDuration: 4.43
-  zoomDuration: 1.49
+  zoomDuration: 1.43
   postDeathDisplayTime: 0
   playerTransform: {fileID: 0}
   fullScreenDeathImage: {fileID: 0}
