@@ -229,3 +229,4 @@ MonoBehaviour:
   postDeathDisplayTime: 0
   playerTransform: {fileID: 0}
   fullScreenDeathImage: {fileID: 0}
+  cameraMoveDelay: 2.45

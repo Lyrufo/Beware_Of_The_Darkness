@@ -19,6 +19,9 @@ public class DeathHandler : MonoBehaviour
     private Canvas _deathCanvas;
     private Animator _deathUIAnimator;
 
+    [Header("Custom timing")]
+    public float cameraMoveDelay = 2.2f; // le moment exact où l'écran est noir, à config dans l'Inspector
+
 
 
     private void Awake()
@@ -32,48 +35,48 @@ public class DeathHandler : MonoBehaviour
 
     private IEnumerator DeathSequence(Transform playerTransform)
     {
-        // Vérification initiale des dépendances
         if (playerTransform == null || cameraMovement == null || respawnManager == null)
         {
             Debug.LogError("Références manquantes dans DeathHandler!");
             yield break;
         }
 
-        // [1/3] Initialisation sécurisée de l'animator
         if (DeathUIAnimator == null)
         {
             Debug.LogError("Animator de mort non trouvé!");
             yield break;
         }
 
-        // [2/3] Remplacer toutes les occurrences de _deathUIAnimator par DeathUIAnimator
-        DeathUIAnimator.Rebind();
-        DeathUIAnimator.Update(0f);
-
-        // [3/3] Utiliser la propriété cameraMovement au lieu de _cameraMovement
+        // 1. Zoom sur le joueur
         yield return StartCoroutine(cameraMovement.ZoomAndCenterCoroutine(playerTransform));
         yield return new WaitForSeconds(delayBeforeFullScreenAnim);
 
         DeathCanvas.gameObject.SetActive(true);
-        // Lancer l'animation
         DeathUIAnimator.SetTrigger("StartDeath");
+
+        // 2. Déplacement anticipé de la caméra vers le point de respawn PENDANT l'animation de mort
+        // 2. Attendre le moment exact avant de déplacer la caméra
+        yield return new WaitForSeconds(cameraMoveDelay);
+
+        // Puis déplacer la caméra au point de respawn
+        Transform respawnPoint = respawnManager.defaultRespawnPoint;
+        cameraMovement.target = null; // désactiver le suivi temporaire
+        cameraMovement.transform.position = new Vector3(
+            respawnPoint.position.x,
+            respawnPoint.position.y + cameraMovement.yOffset,
+            -10f
+        );
+        cameraMovement.ResetCamera();
+
+        // 3. Attendre la fin de l’animation de mort
         yield return new WaitForSeconds(deathUIAnimDuration);
 
-        // Pause finale
         yield return new WaitForSeconds(postDeathDisplayTime);
 
-        // Nettoyage
         DeathCanvas.gameObject.SetActive(false);
 
-        // Vérifier le respawn manager
-        if (respawnManager != null)
-        {
-            respawnManager.TriggerRespawn();
-        }
-        else
-        {
-            Debug.LogError("RespawnManager non trouvé!");
-        }
+        // 4. Respawn (camera est déjà placée au bon endroit)
+        respawnManager.TriggerRespawn();
     }
 
     #region Propriétés optimisées

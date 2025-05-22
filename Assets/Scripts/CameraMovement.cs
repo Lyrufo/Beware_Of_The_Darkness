@@ -53,7 +53,7 @@ public class CameraMovement : MonoBehaviour
 
     void Update() //ça c'est le basic mvt de la cam quand bah y'a pas la mort et donc le zoom qui se déclenchent
     {
-        if (!isZooming)
+        if (!isZooming && target != null)
         {
             Vector3 newPos = new Vector3(target.position.x, target.position.y + yOffset, -10f);
             transform.position = Vector3.Slerp(transform.position, newPos, FollowSpeed * Time.deltaTime);
