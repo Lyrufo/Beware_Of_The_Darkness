@@ -22,9 +22,6 @@ public class PlayerCharacter2D : MonoBehaviour
     [Tooltip("la 'difficulté' pour faire sauter le perso (force appliquée)")]
     public float jumpForce = 16f;
 
-    [Tooltip("la force appaliquée pour la descente")]
-    public float fallForce = 13f;
-
     [Tooltip("le layer sur lequel ça agit pour éviter que le chara capte son propre collider ")]
     public LayerMask groundLayer;
 
@@ -164,12 +161,6 @@ public class PlayerCharacter2D : MonoBehaviour
             isGrounded = false;
             //on remet à l'état faux jusqu'à ce que ça capte le sol et revien en true
         }
-
-        if (Input.GetKeyDown(KeyCode.DownArrow) && isGrounded == false)
-        {
-            playerRigidbody.AddForce(Vector2.down * fallForce, ForceMode2D.Impulse);
-        }
-
 
     }
 
