@@ -22,16 +22,20 @@ public class TimerDieAndRespawn : MonoBehaviour
 
     void Update()
     {
-        if (deathHandler.respawnManager._currentPlayer == null) return; // Protection anti-null
+        if (deathHandler == null || deathHandler.respawnManager == null) return;
+
+        // Vérifie si le joueur existe ET est actif
+        if (deathHandler.respawnManager._currentPlayer == null ||
+            !deathHandler.respawnManager._currentPlayer.activeInHierarchy) return;
 
         var player = deathHandler.respawnManager._currentPlayer.GetComponent<PlayerCharacter2D>();
-        if (!player.canMove) return;
+        if (player == null || !player.canMove) return;
 
         timer += Time.deltaTime;
 
         if (timer > maxtime)
         {
-            deathHandler.HandleDeath(playerTransform);
+            deathHandler.HandleDeath(player.transform); // Passer la transform du joueur actuel
             enabled = false;
         }
     }

@@ -30,6 +30,11 @@ public class RespawnManager : MonoBehaviour
     private void Start()
     {
         _currentRespawnPoint = defaultRespawnPoint;
+        if (playerPrefab == null)
+        {
+            Debug.LogError("Player Prefab non assigné dans RespawnManager!");
+            return;
+        }
         SpawnPlayer();
     }
 
