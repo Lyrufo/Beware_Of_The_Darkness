@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Lore2
   m_EditorClassIdentifier: 
   interactiveObjectName: Page de Journaux abimes
-  description: 
+  description: "Des vielles pages de journaux parlant de l'apparition du culte de
+    l'Ombre. Celui ci s'est forme peu apres la premiere apparition de l'Ombre. Le
+    nombre de membres ont augmente de fa\xE7on exponentielle tres rapidemment."
   objectModel: {fileID: 0}
   minimodel: {fileID: 0}
   alternateSprite: {fileID: -1272025308, guid: 06b4ff59f90e00e438f35e03ad942618, type: 3}

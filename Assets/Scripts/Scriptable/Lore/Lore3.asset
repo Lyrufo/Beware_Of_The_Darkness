@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: Lore3
   m_EditorClassIdentifier: 
   interactiveObjectName: Page de Journaux abimes
-  description: 
+  description: Des journaux relatant les action du culte de l'Ombre. Les membres
+    de celui scrifient regulierement des enfants qu'ils capturent et enferment dans
+    ce manoir pour que l'Ombre s'en empare. Ces fanatiques pensent que, etant a l'origine
+    de ces sacrifices, l'Ombre leur accordera de son pouvoir
   objectModel: {fileID: 0}
   minimodel: {fileID: 0}
   alternateSprite: {fileID: -1272025308, guid: 06b4ff59f90e00e438f35e03ad942618, type: 3}

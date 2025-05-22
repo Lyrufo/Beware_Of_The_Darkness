@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Lore1
   m_EditorClassIdentifier: 
   interactiveObjectName: Page de Journaux abimes
-  description: "Une vielle page de journal evoquant la periode autour de laquelle
+  description: "Des vielles pages de journaux evoquant la periode autour de laquelle
     l'ombre est arriv\xE9e. Les nuits se faisaient de plus en plus longues et celle
     ci est apparue, profitant de ce terrain propice"
   objectModel: {fileID: 0}

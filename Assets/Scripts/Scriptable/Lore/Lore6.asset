@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3be8319ad4e8c7f4ca396e1955dc05b3, type: 3}
   m_Name: Lore6
   m_EditorClassIdentifier: 
-  interactiveObjectName: Page de Journaux abimes
-  description: 
+  interactiveObjectName: 'Pages de journaux abimes '
+  description: "Vous pouvez lire dans ces journaux des mises en garde contre l'Ombre
+    qui, une fois le soleil couch\xE9, n'aura aucun mal \xE0 vous atteindre s'il
+    n'y a pas assez de lumi\xE8re dans vos alentours. Les rapports parlent aussi
+    du fait qu'elle soit apparemment surpuissante et invincible."
   objectModel: {fileID: 0}
   minimodel: {fileID: 0}
-  alternateSprite: {fileID: -1272025308, guid: 06b4ff59f90e00e438f35e03ad942618, type: 3}
+  alternateSprite: {fileID: 0}

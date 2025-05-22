@@ -10,10 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3be8319ad4e8c7f4ca396e1955dc05b3, type: 3}
-  m_Name: Lore9
+  m_Name: Useless3
   m_EditorClassIdentifier: 
-  interactiveObjectName: Page de Journaux abimes
-  description: 
+  interactiveObjectName: Livre d'histoire
+  description: Un manuel d'histoire dans lequel les regnes des plus grands mornarques
+    y sont detailles, l'un des noms de ces mornarques est entoure plusieurs fois
+    en rouge. Celui du "King Hubert"... Ca ne va pas beaucoup vous aider vous devriez
+    vous remettre en route
   objectModel: {fileID: 0}
   minimodel: {fileID: 0}
   alternateSprite: {fileID: -1272025308, guid: 06b4ff59f90e00e438f35e03ad942618, type: 3}

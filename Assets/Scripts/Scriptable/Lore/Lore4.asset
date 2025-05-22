@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: Lore4
   m_EditorClassIdentifier: 
   interactiveObjectName: Page de Journaux abimes
-  description: 
+  description: Dans ces journaux, vous pouvez lire les rapports faits sur l'Ombre
+    rendu publiques. Ceux ci affirment que l'Ombre ne peut operer que de nuit et
+    uniquement dans les lieux peu eclaires, comme ce manoir... S'en echapper et se
+    mettre a l'abri dans un lieu lumineux devient une urgence
   objectModel: {fileID: 0}
   minimodel: {fileID: 0}
   alternateSprite: {fileID: -1272025308, guid: 06b4ff59f90e00e438f35e03ad942618, type: 3}
