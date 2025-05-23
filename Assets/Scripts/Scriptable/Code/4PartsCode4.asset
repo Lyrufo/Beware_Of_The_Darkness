@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: 4PartsCode4
   m_EditorClassIdentifier: 
   interactiveObjectName: Note
-  description: "Un petit papier sur lequel est dessin\xE9 un chiffre en couleur"
+  description: "Un petit papier sur lequel est dessin\xE9 un chiffre en couleur :
+    un 8 violet"
   objectModel: {fileID: 0}
   minimodel: {fileID: 0}
   alternateSprite: {fileID: -1272025308, guid: 06b4ff59f90e00e438f35e03ad942618, type: 3}
