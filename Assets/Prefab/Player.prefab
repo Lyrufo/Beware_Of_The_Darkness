@@ -22,7 +22,7 @@ GameObject:
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8926590538879307672
 Transform:
   m_ObjectHideFlags: 0
@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timer: 0
-  maxtime: 11.8
+  maxtime: 100.6
   deathHandler: {fileID: 3954826677353050885}
 --- !u!50 &8621723385061764510
 Rigidbody2D:
@@ -113,7 +113,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8841324090590243263}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -175,7 +175,8 @@ MonoBehaviour:
   playerRigidbody: {fileID: 8621723385061764510}
   canMove: 0
   isGrounded: 1
-  _initialGravityScale: 0
+  _initialGravityScale: 6
+  _animator: {fileID: 3323831873968392811}
 --- !u!70 &1535068328707259091
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

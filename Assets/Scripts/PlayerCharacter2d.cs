@@ -29,12 +29,13 @@ public class PlayerCharacter2D : MonoBehaviour
     public float groundDistance = 1.1f;
 
     public Rigidbody2D playerRigidbody = null; //pour bouger
-    private Animator _animator = null; //pour mettre les anim
     private SpriteRenderer _spriteRenderer = null; // pour montrer le chara sur l'écran;  = null c'est pour etre sur que en gros ça fait ref à rien dès le départ
     public bool canMove = true;
     public bool isGrounded = false; //booléen pour savoir si je touche le sol ou pas
     [SerializeField] private float _initialGravityScale = 0f; // Rendre visible dans l'inspector
     public float InitialGravityScale => _initialGravityScale;
+
+    [SerializeField] private Animator _animator = null;
 
     private void Awake()
     {
@@ -175,6 +176,8 @@ public class PlayerCharacter2D : MonoBehaviour
 
     public void SetCinematicMode(bool active)
     {
+        if (_animator == null)
+            _animator = GetComponent<Animator>();
         if (active)
         {
             canMove = false;

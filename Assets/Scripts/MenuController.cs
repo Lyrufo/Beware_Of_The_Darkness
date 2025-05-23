@@ -6,15 +6,20 @@ public class MenuController : MonoBehaviour
 {
     public void StartGame()
     {
-        GameManager.Instance.StartGameplay();
-        Debug.Log("Jeu démarré !");
+        // Appelle la méthode du GameManager
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.StartGame();
+        }
+        else
+        {
+            Debug.LogError("GameManager.Instance est null!");
+        }
     }
 
     public void QuitGame()
     {
-        Debug.Log("Quitter le jeu");
         Application.Quit();
-
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #endif

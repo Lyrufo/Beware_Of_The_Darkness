@@ -12,7 +12,7 @@ public class DeathHandler : MonoBehaviour
 
     [Header("Références")]
     public Transform playerTransform;
-    public Image fullScreenDeathImage;
+    public Canvas fullScreenDeathImage;
 
     private RespawnManager _respawnManager;
     private CameraMovement _cameraMovement;

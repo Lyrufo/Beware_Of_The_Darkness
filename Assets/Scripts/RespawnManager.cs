@@ -8,6 +8,7 @@ public class RespawnManager : MonoBehaviour
     public GameObject playerPrefab;
     public DeathHandler deathHandler;
     public CameraMovement cameraMovement;
+    public static RespawnManager Instance { get; private set; }
 
     [Header("Timings")]
     public float respawnDelay = 2f;
@@ -15,6 +16,16 @@ public class RespawnManager : MonoBehaviour
 
     public GameObject CurrentPlayer { get; private set; }
     private Transform _currentRespawnPoint;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+    }
 
     private void Start()
     {
