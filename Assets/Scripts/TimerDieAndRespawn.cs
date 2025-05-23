@@ -32,4 +32,9 @@ public class TimerDieAndRespawn : MonoBehaviour
             }
         }
     }
+
+    public void StartTimer()
+    {
+        ResetTimer();
+    }
 }
