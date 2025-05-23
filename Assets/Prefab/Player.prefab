@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timer: 0
-  maxtime: 100
+  maxtime: 70
   deathHandler: {fileID: 3954826677353050885}
 --- !u!50 &8621723385061764510
 Rigidbody2D:
@@ -165,8 +165,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fce531656c7c454eac21545d148932f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementAcceleration: 2200
-  maxMovementSpeed: 12.5
+  movementAcceleration: 2072
+  maxMovementSpeed: 11.3
   jumpForce: 25
   groundLayer:
     serializedVersion: 2

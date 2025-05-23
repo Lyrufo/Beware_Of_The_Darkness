@@ -17,7 +17,8 @@ MonoBehaviour:
     etre un allie. Celui-ci vous explique que vous avez apparemment \xE9t\xE9 captur\xE9
     par des fanatiques de l'Ombre pour lui faire une offrande. Elle vous indique
     \xE9galement que le soleil se couchant, vous evez vous depecher de sortir d'ici
-    pour vous mettre a l'abri, dans un lieu tres eclaire"
+    pour vous mettre a l'abri, dans un lieu tres eclaire. Soyez attentif a la luminosite
+    exterieure..."
   objectModel: {fileID: 0}
   minimodel: {fileID: 0}
   alternateSprite: {fileID: -1272025308, guid: 06b4ff59f90e00e438f35e03ad942618, type: 3}
