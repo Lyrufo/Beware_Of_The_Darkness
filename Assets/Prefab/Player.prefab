@@ -16,13 +16,14 @@ GameObject:
   - component: {fileID: 6807482332966828881}
   - component: {fileID: 1535068328707259091}
   - component: {fileID: 3954826677353050885}
+  - component: {fileID: 3740453786842003271}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8926590538879307672
 Transform:
   m_ObjectHideFlags: 0
@@ -32,7 +33,7 @@ Transform:
   m_GameObject: {fileID: 8841324090590243263}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 2.17, y: 0.48, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -173,7 +174,7 @@ MonoBehaviour:
     m_Bits: 768
   groundDistance: 0.1
   playerRigidbody: {fileID: 8621723385061764510}
-  canMove: 0
+  canMove: 1
   isGrounded: 1
   _initialGravityScale: 6
   _animator: {fileID: 3323831873968392811}
@@ -231,3 +232,55 @@ MonoBehaviour:
   playerTransform: {fileID: 0}
   fullScreenDeathImage: {fileID: 0}
   cameraMoveDelay: 2.45
+--- !u!114 &3740453786842003271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8841324090590243263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ComponentVersion: 1
+  m_LightType: 1
+  m_BlendStyleIndex: 0
+  m_FalloffIntensity: 0.17
+  m_Color: {r: 0.754717, g: 0.45032215, b: 0.12459949, a: 1}
+  m_Intensity: 0.45
+  m_LightVolumeIntensity: 0.54
+  m_LightVolumeIntensityEnabled: 1
+  m_ApplyToSortingLayers: 000000002f2eb54e
+  m_LightCookieSprite: {fileID: 21300000, guid: d15562a6464d4544a871a2e8ec1580bb, type: 3}
+  m_DeprecatedPointLightCookieSprite: {fileID: 0}
+  m_LightOrder: 0
+  m_AlphaBlendOnOverlap: 0
+  m_OverlapOperation: 0
+  m_NormalMapDistance: 3
+  m_NormalMapQuality: 2
+  m_UseNormalMap: 0
+  m_ShadowIntensityEnabled: 1
+  m_ShadowIntensity: 0.721
+  m_ShadowVolumeIntensityEnabled: 1
+  m_ShadowVolumeIntensity: 0.45
+  m_LocalBounds:
+    m_Center: {x: -0.1992, y: -0.67384994, z: 0}
+    m_Extent: {x: 0.7406, y: 2.59415, z: 0}
+  m_PointLightInnerAngle: 360
+  m_PointLightOuterAngle: 360
+  m_PointLightInnerRadius: 0.54
+  m_PointLightOuterRadius: 2.08
+  m_ShapeLightParametricSides: 5
+  m_ShapeLightParametricAngleOffset: 0
+  m_ShapeLightParametricRadius: 1
+  m_ShapeLightFalloffSize: 0.7
+  m_ShapeLightFalloffOffset: {x: 0, y: 0}
+  m_ShapePath:
+  - {x: -0.2106645, y: -1.7692779, z: 0}
+  - {x: -0.15885858, y: -2.568987, z: 0}
+  - {x: -0.1642737, y: -0.7518729, z: 0}
+  - {x: -0.18710117, y: 1.2215332, z: 0}
+  - {x: -0.21902107, y: 0.4113779, z: 0}
+  - {x: -0.23992188, y: -1.2165688, z: 0}
