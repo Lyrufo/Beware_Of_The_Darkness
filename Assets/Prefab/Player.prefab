@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timer: 0
-  maxtime: 8.6
+  maxtime: 100
   deathHandler: {fileID: 3954826677353050885}
 --- !u!50 &8621723385061764510
 Rigidbody2D:

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3be8319ad4e8c7f4ca396e1955dc05b3, type: 3}
+  m_Name: Ending
+  m_EditorClassIdentifier: 
+  interactiveObjectName: THE END
+  description: Felicitations vous vous etes echape ! Merci d'avoir joue a la demo
+    de BewareOfTheDarkness. Merci a mes chers camarades de classe ainsi que les professeurs
+    sans qui ce projet n'aurais pas pu voir le jour !
+  objectModel: {fileID: 0}
+  minimodel: {fileID: 21300000, guid: 23a7e7abe9df7ba42b8e330d84c0b067, type: 3}
+  alternateSprite: {fileID: 21300000, guid: 23a7e7abe9df7ba42b8e330d84c0b067, type: 3}
